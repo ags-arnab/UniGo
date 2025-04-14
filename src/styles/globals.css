@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile cards specific styling */
+@media (max-width: 640px) {
+  .mobile-cards {
+    perspective: 1500px;
+    transform-style: preserve-3d;
+  }
+  
+  .mobile-cards > div {
+    transition: transform 0.3s ease;
+    backface-visibility: hidden;
+  }
+  
+  .mobile-cards > div:not(:first-child) {
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  }
+}
+
+/* Card hover effects for mobile */
+@media (hover: none) {
+  .mobile-cards > div:active {
+    transform: scale(0.98) translateY(2px);
+  }
+}

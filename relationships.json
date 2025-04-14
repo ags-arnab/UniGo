@@ -1,0 +1,122 @@
+[
+  {
+    "source_table": "categories",
+    "source_column": "vendor_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
+    "source_table": "counters",
+    "source_column": "vendor_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "SET NULL"
+  },
+  {
+    "source_table": "menu_items",
+    "source_column": "counter_id",
+    "target_table": "counters",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
+    "source_table": "order_items",
+    "source_column": "menu_item_id",
+    "target_table": "menu_items",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "RESTRICT"
+  },
+  {
+    "source_table": "order_items",
+    "source_column": "counter_id",
+    "target_table": "counters",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "RESTRICT"
+  },
+  {
+    "source_table": "order_items",
+    "source_column": "order_id",
+    "target_table": "orders",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
+    "source_table": "orders",
+    "source_column": "student_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "NO ACTION"
+  },
+  {
+    "source_table": "orders",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "SET NULL"
+  },
+  {
+    "source_table": "profiles",
+    "source_column": "id",
+    "target_table": "users",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
+    "source_table": "tax_rates",
+    "source_column": "vendor_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
+    "source_table": "transactions",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "NO ACTION"
+  },
+  {
+    "source_table": "transactions",
+    "source_column": "order_id",
+    "target_table": "orders",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "NO ACTION"
+  },
+  {
+    "source_table": "transactions",
+    "source_column": "related_user_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "NO ACTION"
+  },
+  {
+    "source_table": "vendor_applications",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
+    "source_table": "vendor_settings",
+    "source_column": "vendor_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  }
+]

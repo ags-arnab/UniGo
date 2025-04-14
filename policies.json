@@ -1,0 +1,382 @@
+[
+  {
+    "policyname": "Allow admin full access on categories",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "categories"
+  },
+  {
+    "policyname": "Allow vendors to create their own categories",
+    "permissive": "PERMISSIVE",
+    "command": "INSERT",
+    "roles": "{public}",
+    "using_expression": null,
+    "check_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (vendor_id = auth.uid()))",
+    "schemaname": "public",
+    "tablename": "categories"
+  },
+  {
+    "policyname": "Allow vendors to delete their own categories",
+    "permissive": "PERMISSIVE",
+    "command": "DELETE",
+    "roles": "{public}",
+    "using_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (vendor_id = auth.uid()))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "categories"
+  },
+  {
+    "policyname": "Allow vendors to update their own categories",
+    "permissive": "PERMISSIVE",
+    "command": "UPDATE",
+    "roles": "{public}",
+    "using_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (vendor_id = auth.uid()))",
+    "check_expression": "(vendor_id = auth.uid())",
+    "schemaname": "public",
+    "tablename": "categories"
+  },
+  {
+    "policyname": "Allow vendors to view their own categories",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (vendor_id = auth.uid()))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "categories"
+  },
+  {
+    "policyname": "Allow admin full access on counters",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "counters"
+  },
+  {
+    "policyname": "Allow vendors to create their own counters",
+    "permissive": "PERMISSIVE",
+    "command": "INSERT",
+    "roles": "{public}",
+    "using_expression": null,
+    "check_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
+    "schemaname": "public",
+    "tablename": "counters"
+  },
+  {
+    "policyname": "Allow vendors to delete their own counters",
+    "permissive": "PERMISSIVE",
+    "command": "DELETE",
+    "roles": "{public}",
+    "using_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (vendor_id = auth.uid()))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "counters"
+  },
+  {
+    "policyname": "Allow vendors to update their own counters",
+    "permissive": "PERMISSIVE",
+    "command": "UPDATE",
+    "roles": "{public}",
+    "using_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (vendor_id = auth.uid()))",
+    "check_expression": "(vendor_id = auth.uid())",
+    "schemaname": "public",
+    "tablename": "counters"
+  },
+  {
+    "policyname": "Allow vendors to view their own counters",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (vendor_id = auth.uid()))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "counters"
+  },
+  {
+    "policyname": "Allow admin full access on menu_items",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow authenticated users to view available menu items",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "((auth.role() = 'authenticated'::text) AND (available = true))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow vendors to create items for their counters",
+    "permissive": "PERMISSIVE",
+    "command": "INSERT",
+    "roles": "{public}",
+    "using_expression": null,
+    "check_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow vendors to delete items from their counters",
+    "permissive": "PERMISSIVE",
+    "command": "DELETE",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow vendors to update items on their counters",
+    "permissive": "PERMISSIVE",
+    "command": "UPDATE",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "check_expression": "(counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid())))",
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow vendors to view all their menu items",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow admin full access on order_items",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "order_items"
+  },
+  {
+    "policyname": "Allow students to create their own order items",
+    "permissive": "PERMISSIVE",
+    "command": "INSERT",
+    "roles": "{public}",
+    "using_expression": null,
+    "check_expression": "(is_student() AND (order_id IN ( SELECT orders.id\n   FROM orders\n  WHERE (orders.user_id = auth.uid()))))",
+    "schemaname": "public",
+    "tablename": "order_items"
+  },
+  {
+    "policyname": "Allow students to view their own order items",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(is_student() AND (order_id IN ( SELECT orders.id\n   FROM orders\n  WHERE (orders.user_id = auth.uid()))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "order_items"
+  },
+  {
+    "policyname": "Allow vendors to update status of their order items",
+    "permissive": "PERMISSIVE",
+    "command": "UPDATE",
+    "roles": "{public}",
+    "using_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "check_expression": "(counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid())))",
+    "schemaname": "public",
+    "tablename": "order_items"
+  },
+  {
+    "policyname": "Allow vendors to view their order items",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "((( SELECT profiles.role\n   FROM profiles\n  WHERE (profiles.id = auth.uid())) = 'vendor'::user_role) AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "order_items"
+  },
+  {
+    "policyname": "Allow admin full access on orders",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "orders"
+  },
+  {
+    "policyname": "Allow students to create their own orders",
+    "permissive": "PERMISSIVE",
+    "command": "INSERT",
+    "roles": "{public}",
+    "using_expression": null,
+    "check_expression": "(is_student() AND (user_id = auth.uid()))",
+    "schemaname": "public",
+    "tablename": "orders"
+  },
+  {
+    "policyname": "Allow students to view their own orders",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(is_student() AND (user_id = auth.uid()))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "orders"
+  },
+  {
+    "policyname": "Allow vendors to create orders for themselves (POS)",
+    "permissive": "PERMISSIVE",
+    "command": "INSERT",
+    "roles": "{public}",
+    "using_expression": null,
+    "check_expression": "(is_vendor() AND (user_id = auth.uid()))",
+    "schemaname": "public",
+    "tablename": "orders"
+  },
+  {
+    "policyname": "Allow vendors to view orders with their items",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND check_vendor_order_access(id))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "orders"
+  },
+  {
+    "policyname": "Allow admin update access on profiles",
+    "permissive": "PERMISSIVE",
+    "command": "UPDATE",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": "is_admin()",
+    "schemaname": "public",
+    "tablename": "profiles"
+  },
+  {
+    "policyname": "Users can update own profile.",
+    "permissive": "PERMISSIVE",
+    "command": "UPDATE",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = id)",
+    "check_expression": "(auth.uid() = id)",
+    "schemaname": "public",
+    "tablename": "profiles"
+  },
+  {
+    "policyname": "Users can view their own profile.",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = id)",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "profiles"
+  },
+  {
+    "policyname": "Allow admin full access on tax_rates",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "tax_rates"
+  },
+  {
+    "policyname": "Allow vendors to manage their own tax rates",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
+    "check_expression": "(vendor_id = auth.uid())",
+    "schemaname": "public",
+    "tablename": "tax_rates"
+  },
+  {
+    "policyname": "Allow users to view their own transactions",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = user_id)",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "transactions"
+  },
+  {
+    "policyname": "Allow admin full access on vendor_applications",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "vendor_applications"
+  },
+  {
+    "policyname": "Allow users to submit their own application",
+    "permissive": "PERMISSIVE",
+    "command": "INSERT",
+    "roles": "{public}",
+    "using_expression": null,
+    "check_expression": "(auth.uid() = user_id)",
+    "schemaname": "public",
+    "tablename": "vendor_applications"
+  },
+  {
+    "policyname": "Allow users to view their own application",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = user_id)",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "vendor_applications"
+  },
+  {
+    "policyname": "Allow admin full access on vendor_settings",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "vendor_settings"
+  },
+  {
+    "policyname": "Allow vendors to update their own settings",
+    "permissive": "PERMISSIVE",
+    "command": "UPDATE",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
+    "check_expression": "(vendor_id = auth.uid())",
+    "schemaname": "public",
+    "tablename": "vendor_settings"
+  },
+  {
+    "policyname": "Allow vendors to view their own settings",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "vendor_settings"
+  }
+]
