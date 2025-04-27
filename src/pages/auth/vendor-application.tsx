@@ -195,15 +195,21 @@ const VendorApplication: React.FC = () => {
     // setUploadProgress({});
 
     try {
-      // Prepare data, including the File objects
+      // Determine application type flag based on business type
+      const isClubApplication = formData.businessType === 'club'; // Assuming 'club' is the value for Student Club
+
+      // Prepare data, including the File objects and application type flag
       const finalFormData = {
         ...formData,
         businessRegistrationDocFile: businessRegistrationDoc, // Pass the File object
         foodHandlingDocFile: foodHandlingDoc,           // Pass the File object
+        // Add the appropriate flag for the backend trigger
+        is_club_application: isClubApplication,
+        is_vendor_application: !isClubApplication,
       };
 
-      console.log('Submitting form data (including files) to controller:', finalFormData);
-      // Controller now handles the upload internally
+      console.log('Submitting form data (including files and flags) to controller:', finalFormData);
+      // Controller now handles the upload internally and should use the flags
       await AuthController.registerAndApplyAsVendor(finalFormData);
       setIsSuccessModalOpen(true); // Show success modal
 

@@ -33,6 +33,7 @@ const StudentEvents = lazy(() => import('@/pages/student/events/index'));
 const StudentEventsCalendar = lazy(() => import('@/pages/student/events/calendar'));
 const StudentEventsDetails = lazy(() => import('@/pages/student/events/details'));
 const StudentEventsRegistration = lazy(() => import('@/pages/student/events/registration'));
+const ClubEventsPage = lazy(() => import('@/pages/student/ClubEventsPage')); // Import ClubEventsPage
 // Student Marketplace
 const StudentMarketplace = lazy(() => import('@/pages/student/marketplace/index'));
 const StudentMarketplaceProductDetails = lazy(() => import('@/pages/student/marketplace/product-details'));
@@ -110,6 +111,19 @@ const CounterManagementView = lazy(() => import('@/pages/vendor/dashboard/Counte
 const CategoryManagementView = lazy(() => import('@/pages/vendor/cafeteria_management/categories.tsx')); // Import the new page
 const VendorBalancePage = lazy(() => import('@/pages/vendor/dashboard/balance.tsx')); // Import the balance page
 
+// Club Management Pages (Lazy Loaded) - Still in vendor/club-management folder
+const ClubEventManagementView = lazy(() => import('@/pages/vendor/club-management/EventManagementView.tsx'));
+const ClubCreateEventView = lazy(() => import('@/pages/vendor/club-management/CreateEventView.tsx'));
+const ClubEditEventView = lazy(() => import('@/pages/vendor/club-management/EditEventView.tsx')); // Added Edit view
+const ClubSettingsView = lazy(() => import('@/pages/vendor/club-management/SettingsView.tsx'));
+const ClubStorefrontView = lazy(() => import('@/pages/vendor/club-management/ClubStorefrontView.tsx')); // Renamed and moved
+const ClubBalanceView = lazy(() => import('@/pages/vendor/club-management/ClubBalanceView.tsx')); // Added Balance view
+const ClubAnalyticsView = lazy(() => import('@/pages/vendor/club-management/ClubAnalyticsView.tsx')); // Added Analytics view
+const AllRegistrationsView = lazy(() => import('@/pages/vendor/club-management/AllRegistrationsView.tsx')); // Added All Registrations view
+
+// New Club Dashboard Layout
+const ClubDashboardLayout = lazy(() => import('@/layouts/ClubDashboardLayout')); // Import new layout
+
 // New Admin Dashboard Layout and Views (Lazy Loaded)
 const AdminDashboardLayout = lazy(() => import('@/layouts/AdminDashboardLayout'));
 const AdminVendorApplicationsPage = lazy(() => import('@/pages/admin/vendors/applications.tsx')); // Added .tsx
@@ -173,6 +187,7 @@ const AppRoutes: React.FC = () => {
               <Route path="calendar" element={<StudentEventsCalendar />} />
               <Route path="details/:id" element={<StudentEventsDetails />} />
               <Route path="registration/:id" element={<StudentEventsRegistration />} />
+              <Route path="clubs/:clubId/events" element={<ClubEventsPage />} /> {/* Add route for club-specific events */}
             </Route>
             
             {/* Student Marketplace Routes */}
@@ -278,10 +293,11 @@ const AppRoutes: React.FC = () => {
 
           {/* === New Centralized Vendor Dashboard Routes === */}
           <Route element={<AuthGuard />}>
+            {/* Only allow 'vendor' role */}
             <Route element={<RoleGuard allowedRoles={['vendor']} />}>
-              {/* Apply the specific layout for the dashboard */}
+              {/* Apply the Vendor layout */}
               <Route path="/vendor/dashboard" element={<VendorDashboardLayout />}>
-                {/* Default route within the dashboard */}
+                {/* Default route for vendors */}
                 <Route index element={<Navigate to="menu" replace />} />
               <Route path="menu" element={<MenuManagementView />} />
               <Route path="inventory" element={<InventoryView />} />
@@ -303,18 +319,47 @@ const AppRoutes: React.FC = () => {
               <Route path="legacy-orders" element={<VendorCafeteriaOrders />} />
               {/* Add the Delivery route here */}
               <Route path="delivery" element={<VendorCafeteriaDelivery />} />
-              {/* Add other dashboard-specific routes here if needed */}
+              {/* Vendor-specific routes end here */}
             </Route> {/* End of VendorDashboardLayout route */}
-           </Route> {/* End of RoleGuard route */}
+           </Route> {/* End of RoleGuard for 'vendor' */}
           </Route> {/* End of AuthGuard route */}
           {/* === End of New Vendor Dashboard Routes === */}
 
 
+          {/* === New Club Dashboard Routes === */}
+          <Route element={<AuthGuard />}>
+            {/* Only allow 'club' role */}
+            <Route element={<RoleGuard allowedRoles={['club']} />}>
+              {/* Apply the Club layout */}
+              <Route path="/club/dashboard" element={<ClubDashboardLayout />}>
+                 {/* Default route for clubs */}
+                 <Route index element={<Navigate to="events" replace />} />
+                 <Route path="events" element={<ClubEventManagementView />} />
+                 <Route path="events/create" element={<ClubCreateEventView />} />
+                 <Route path="events/edit/:eventId" element={<ClubEditEventView />} /> {/* Added Edit route */}
+                 <Route path="registrations" element={<AllRegistrationsView />} /> {/* Added All Registrations route */}
+                 <Route path="balance" element={<ClubBalanceView />} /> {/* Added Balance route */}
+                 <Route path="analytics" element={<ClubAnalyticsView />} /> {/* Added Analytics route */}
+                 <Route path="settings" element={<ClubSettingsView />} />
+                 {/* Add other club-specific dashboard routes here */}
+              </Route> {/* End of ClubDashboardLayout route */}
+            </Route> {/* End of RoleGuard for 'club' */}
+          </Route> {/* End of AuthGuard route */}
+          {/* === End of New Club Club Dashboard Routes === */}
+
+
+          {/* === Club Storefront Route (Public or Authenticated) === */}
+          {/* Decide if this needs AuthGuard or is fully public */}
+          {/* For now, assume public access, using the moved component */}
+          <Route path="/club/:clubId" element={<DefaultLayout><ClubStorefrontView /></DefaultLayout>} />
+
+
           {/* OLD Vendor Routes with AuthGuard and RoleGuard */}
+          {/* Keep this guard specific to 'vendor' if these routes are truly vendor-only */}
           <Route element={<AuthGuard />}>
             <Route element={<RoleGuard allowedRoles={['vendor']} />}>
               <Route path="/vendor" element={<DefaultLayout><Outlet /></DefaultLayout>}>
-                {/* Vendor Profile */}
+                {/* Vendor Profile - Maybe clubs need a profile page too? */}
                 <Route path="profile" element={<VendorProfile />} />
                 
                 {/* Vendor Products */}

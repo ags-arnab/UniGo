@@ -9,10 +9,11 @@ export interface UserProfile {
   email?: string;
   full_name?: string;
   avatar_url?: string;
-  role: 'student' | 'vendor' | 'admin'; // Matches the user_role enum
+  role: 'student' | 'vendor' | 'admin' | 'club'; // Matches the user_role enum, added 'club'
   status?: 'active' | 'inactive' | 'pending' | 'pending_approval' | 'rejected';
   phone_number?: string;
   student_id?: string;
+  balance?: number; // Added balance field
   created_at?: string;
   updated_at?: string;
 }
@@ -29,6 +30,7 @@ interface AuthContextType {
   isAdmin: boolean; // Convenience flag
   isVendor: boolean; // Convenience flag
   isStudent: boolean; // Convenience flag
+  isClub: boolean; // Convenience flag for Club role
   logout: () => Promise<void>; // Renamed from signOut
   // Removed setAuthenticatedUser, startLoginAttempt, endLoginAttempt
 }
@@ -133,11 +135,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             } else {
               // Profile exists but status is not active.
               // Keep the session/user from Supabase, but clear the profile and set an error.
-              console.warn(`AuthContext: User ${currentUser.id} profile status is ${userProfile.status}. Clearing profile and setting error, but keeping session.`);
-              let statusErrorMsg = 'Your account is not active.';
-              if (userProfile.status === 'pending_approval') statusErrorMsg = 'Your vendor account is pending approval.';
-              if (userProfile.status === 'inactive') statusErrorMsg = 'Your account is inactive.';
-              if (userProfile.status === 'rejected') statusErrorMsg = 'Your account has been rejected.';
+               console.warn(`AuthContext: User ${currentUser.id} profile status is ${userProfile.status}. Clearing profile and setting error, but keeping session.`);
+               let statusErrorMsg = 'Your account is not active.';
+               // Make pending message more generic or role-specific
+               if (userProfile.status === 'pending_approval') {
+                 statusErrorMsg = `Your ${userProfile.role || 'account'} application is pending approval.`;
+               }
+               if (userProfile.status === 'inactive') statusErrorMsg = 'Your account is inactive.';
+               if (userProfile.status === 'rejected') statusErrorMsg = 'Your account application has been rejected.';
               // setSession(null); // DO NOT CLEAR SESSION
               // setUser(null);    // DO NOT CLEAR USER
               setProfile(null); // Clear profile data as it's not usable
@@ -197,6 +202,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const isAdmin = isAuthenticated && !!profile && profile.role === 'admin';
   const isVendor = isAuthenticated && !!profile && profile.role === 'vendor';
   const isStudent = isAuthenticated && !!profile && profile.role === 'student';
+  const isClub = isAuthenticated && !!profile && profile.role === 'club'; // Calculate isClub flag
 
   // Final Context value - defined INSIDE AuthProvider
   const value: AuthContextType = {
@@ -210,6 +216,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAdmin,
     isVendor,
     isStudent,
+    isClub, // Add isClub to context value
     logout,
   };
 

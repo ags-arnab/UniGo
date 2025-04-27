@@ -91,6 +91,195 @@
     "column_default": "now()"
   },
   {
+    "table_name": "event_registrations",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()"
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "event_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "student_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "registration_time",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "status",
+    "data_type": "USER-DEFINED",
+    "is_nullable": "NO",
+    "column_default": "'reserved'::event_registration_status"
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "payment_intent_id",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "paid_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "expires_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "events",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()"
+  },
+  {
+    "table_name": "events",
+    "column_name": "club_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "title",
+    "data_type": "text",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "description",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "event_datetime",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "end_time",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "venue",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "banner_image_path",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "events",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "events",
+    "column_name": "total_seats",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "0"
+  },
+  {
+    "table_name": "events",
+    "column_name": "is_paid",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": "false"
+  },
+  {
+    "table_name": "events",
+    "column_name": "payment_amount",
+    "data_type": "numeric",
+    "is_nullable": "YES",
+    "column_default": "0.00"
+  },
+  {
+    "table_name": "events",
+    "column_name": "sponsors",
+    "data_type": "ARRAY",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "is_seminar",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": "false"
+  },
+  {
+    "table_name": "events",
+    "column_name": "guests",
+    "data_type": "ARRAY",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "registration_deadline",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
     "table_name": "menu_items",
     "column_name": "id",
     "data_type": "uuid",
@@ -357,6 +546,13 @@
     "column_default": null
   },
   {
+    "table_name": "orders",
+    "column_name": "ready_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
     "table_name": "profiles",
     "column_name": "id",
     "data_type": "uuid",
@@ -432,6 +628,20 @@
     "data_type": "numeric",
     "is_nullable": "NO",
     "column_default": "0.00"
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "banner_url",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "description",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
   },
   {
     "table_name": "tax_rates",
@@ -684,6 +894,20 @@
     "data_type": "timestamp with time zone",
     "is_nullable": "NO",
     "column_default": "now()"
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "business_registration_doc_path",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "food_handling_doc_path",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
   },
   {
     "table_name": "vendor_settings",

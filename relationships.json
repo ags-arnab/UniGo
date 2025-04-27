@@ -16,6 +16,30 @@
     "delete_rule": "SET NULL"
   },
   {
+    "source_table": "event_registrations",
+    "source_column": "event_id",
+    "target_table": "events",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
+    "source_table": "event_registrations",
+    "source_column": "student_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
+    "source_table": "events",
+    "source_column": "club_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "CASCADE"
+  },
+  {
     "source_table": "menu_items",
     "source_column": "counter_id",
     "target_table": "counters",
@@ -33,14 +57,6 @@
   },
   {
     "source_table": "order_items",
-    "source_column": "counter_id",
-    "target_table": "counters",
-    "target_column": "id",
-    "update_rule": "NO ACTION",
-    "delete_rule": "RESTRICT"
-  },
-  {
-    "source_table": "order_items",
     "source_column": "order_id",
     "target_table": "orders",
     "target_column": "id",
@@ -48,12 +64,12 @@
     "delete_rule": "CASCADE"
   },
   {
-    "source_table": "orders",
-    "source_column": "student_id",
-    "target_table": "profiles",
+    "source_table": "order_items",
+    "source_column": "counter_id",
+    "target_table": "counters",
     "target_column": "id",
     "update_rule": "NO ACTION",
-    "delete_rule": "NO ACTION"
+    "delete_rule": "RESTRICT"
   },
   {
     "source_table": "orders",
@@ -62,6 +78,14 @@
     "target_column": "id",
     "update_rule": "NO ACTION",
     "delete_rule": "SET NULL"
+  },
+  {
+    "source_table": "orders",
+    "source_column": "student_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "NO ACTION"
   },
   {
     "source_table": "profiles",
@@ -81,6 +105,14 @@
   },
   {
     "source_table": "transactions",
+    "source_column": "related_user_id",
+    "target_table": "profiles",
+    "target_column": "id",
+    "update_rule": "NO ACTION",
+    "delete_rule": "NO ACTION"
+  },
+  {
+    "source_table": "transactions",
     "source_column": "user_id",
     "target_table": "profiles",
     "target_column": "id",
@@ -91,14 +123,6 @@
     "source_table": "transactions",
     "source_column": "order_id",
     "target_table": "orders",
-    "target_column": "id",
-    "update_rule": "NO ACTION",
-    "delete_rule": "NO ACTION"
-  },
-  {
-    "source_table": "transactions",
-    "source_column": "related_user_id",
-    "target_table": "profiles",
     "target_column": "id",
     "update_rule": "NO ACTION",
     "delete_rule": "NO ACTION"

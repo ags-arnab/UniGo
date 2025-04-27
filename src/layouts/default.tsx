@@ -1,5 +1,4 @@
 import React, {  } from 'react'; // Import useEffect
-import { Link } from "@heroui/link";
 import { Navbar } from "@/components/navbar";
 import { CartFAB } from "@/components/ui/cafeteria/CartFAB";
 import { useAuth } from '@/contexts/AuthContext'; // Import useAuth
@@ -26,7 +25,7 @@ export default function DefaultLayout({
       </main>
       {/* Add the Cart FAB here so it overlays the content */}
       <CartFAB /> 
-      <footer className="w-full flex items-center justify-center py-3">
+      {/* <footer className="w-full flex items-center justify-center py-3">
         <Link
           isExternal
           className="flex items-center gap-1 text-current"
@@ -36,7 +35,7 @@ export default function DefaultLayout({
           <span className="text-default-600">Powered by</span>
           <p className="text-primary">HeroUI</p>
         </Link>
-      </footer>
+      </footer> */}
     </div>
   );
 }

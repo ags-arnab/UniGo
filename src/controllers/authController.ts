@@ -86,14 +86,26 @@ export class AuthController {
      // 3. Check role and status *before* considering the login successful
      const actualRole = profile.role; // Role is already typed in UserProfile
 
-     // Role Mismatch Check - ONLY if the user is NOT an admin
-     if (actualRole !== 'admin' && actualRole !== intendedRole) {
-       console.warn(`Role mismatch for user ${signInData.user.id}: Tried to log in as ${intendedRole}, but actual role is ${actualRole}. Signing out.`);
-       await supabase.auth.signOut(); // Sign out FIRST
-       const expectedPortal = actualRole === 'student' ? 'Student' : 'Vendor'; // Admin case handled above
-       // Throw error AFTER sign out is processed
-       throw new Error(`Incorrect login portal. You are registered as a ${expectedPortal}. Please use the ${expectedPortal} login.`);
+     // Role Mismatch Check - Modified to allow 'club' role via 'vendor' portal
+     if (actualRole !== 'admin') { // Admins can log in via any portal (implicitly)
+        // Check if the user is trying the wrong portal, *unless* they are a 'club' trying the 'vendor' portal
+        const isClubUsingVendorPortal = (actualRole === 'club' && intendedRole === 'vendor');
+
+        if (actualRole !== intendedRole && !isClubUsingVendorPortal) {
+            console.warn(`Role mismatch for user ${signInData.user.id}: Tried to log in as ${intendedRole}, but actual role is ${actualRole}. Signing out.`);
+            await supabase.auth.signOut(); // Sign out FIRST
+
+            // Determine the correct portal name based on the actual role
+            let expectedPortal = 'Unknown';
+            if (actualRole === 'student') expectedPortal = 'Student';
+            else if (actualRole === 'vendor') expectedPortal = 'Vendor';
+            else if (actualRole === 'club') expectedPortal = 'Vendor'; // Clubs use the Vendor portal
+
+            // Throw error AFTER sign out is processed
+            throw new Error(`Incorrect login portal. You are registered as a ${actualRole}. Please use the ${expectedPortal} login.`);
+        }
      }
+
 
      // Status Check (applies to all roles, including admin)
      if (profile.status !== 'active') {

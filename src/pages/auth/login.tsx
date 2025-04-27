@@ -53,6 +53,9 @@ const Login: React.FC = () => {
         navigate('/student/cafeteria', { replace: true });
       } else if (validatedProfile.role === 'vendor') {
         navigate('/vendor/dashboard', { replace: true });
+      } else if (validatedProfile.role === 'club') {
+        // Redirect clubs to their new dedicated dashboard
+        navigate('/club/dashboard/events', { replace: true });
       }
 
     } catch (err) {
