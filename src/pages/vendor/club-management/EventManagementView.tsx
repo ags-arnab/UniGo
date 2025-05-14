@@ -87,7 +87,8 @@ const EventManagementView: React.FC = () => {
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-default-500 uppercase tracking-wider">Title</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-default-500 uppercase tracking-wider">Date & Time</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-default-500 uppercase tracking-wider">Venue</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-default-500 uppercase tracking-wider">Seats</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-default-500 uppercase tracking-wider">Total Seats</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-default-500 uppercase tracking-wider">Remaining Seats</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-default-500 uppercase tracking-wider">Paid</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-default-500 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -99,7 +100,14 @@ const EventManagementView: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-900">{event.title}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-default-600">{formatDate(event.event_datetime)}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-default-600">{event.venue || '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-default-600">{event.total_seats}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-default-600">{event.total_seats ?? 'N/A'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-default-600">
+                        {/* Calculate remaining seats */}
+                        {typeof event.total_seats === 'number' && typeof event.active_registration_count === 'number'
+                          ? event.total_seats - event.active_registration_count
+                          : (event.total_seats === 0 ? 'Unlimited' : 'N/A') /* Handle 0 seats as unlimited or show N/A */
+                        }
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-default-600">
                         {event.is_paid ? `Yes (${event.payment_amount?.toFixed(2) ?? '0.00'})` : 'No'}
                       </td>
@@ -124,7 +132,7 @@ const EventManagementView: React.FC = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} className="px-6 py-4 text-center text-sm text-default-500">No events found. Create your first event!</td>
+                    <td colSpan={7} className="px-6 py-4 text-center text-sm text-default-500">No events found. Create your first event!</td> {/* Updated colSpan */}
                   </tr>
                 )}
               </tbody>

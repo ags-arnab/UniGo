@@ -351,12 +351,12 @@ const EditEventView: React.FC = () => {
         end_time: endDate ? endDate.toISOString() : null,
         venue: formData.venue || null,
         banner_image_path: uploadedImagePath, // Use new path if uploaded, else existing
-        total_seats: formData.total_seats ?? 0,
-        is_paid: formData.is_paid ?? false,
-        payment_amount: formData.is_paid ? (formData.payment_amount ?? 0) : null,
-        sponsors: formData.sponsors || null, // Ensure it's an array or null
-        is_seminar: formData.is_seminar ?? false,
-        guests: formData.guests || null, // Ensure it's an array or null
+        total_seats: updatedFormData.total_seats ?? 0, // Use updatedFormData
+        is_paid: updatedFormData.is_paid ?? false, // Use updatedFormData
+        payment_amount: updatedFormData.is_paid ? (updatedFormData.payment_amount ?? 0) : null, // Use updatedFormData
+        sponsors: updatedFormData.sponsors || null, // Use processed sponsors from updatedFormData
+        is_seminar: updatedFormData.is_seminar ?? false, // Use updatedFormData
+        guests: updatedFormData.guests || null, // Use processed guests from updatedFormData
         registration_deadline: deadlineDate ? deadlineDate.toISOString() : null,
       };
 

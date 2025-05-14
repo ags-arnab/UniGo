@@ -74,18 +74,37 @@ export const ClubController = {
     }
     const clubId = session.user.id;
 
+    // Fetch events and the count of active registrations
     const { data, error } = await supabase
       .from('events')
-      .select('*')
+      // Select all event columns and the count of related active registrations
+      .select(`
+        *,
+        active_registration_count:event_registrations(count)
+      `)
+      // Filter the count to include only 'paid' or 'reserved' statuses
+      .in('event_registrations.status', ['paid', 'reserved'])
       .eq('club_id', clubId) // RLS should also enforce this, but explicit check is good
-      .order('event_datetime', { ascending: true }); // Corrected column name
+      .order('event_datetime', { ascending: true });
 
     if (error) {
       console.error('Error fetching club events:', error);
       throw new Error(`Failed to fetch club events: ${error.message}`);
     }
 
-    return (data || []) as EventData[];
+    // Process the data to extract the count correctly
+    const processedData = (data || []).map(event => {
+      // The count might be nested in an array, extract it
+      const countData = event.active_registration_count as any; // Cast to handle potential structure
+      const count = Array.isArray(countData) && countData.length > 0 ? countData[0].count : 0;
+      return {
+        ...event,
+        active_registration_count: count,
+      };
+    });
+
+
+    return processedData as EventData[];
   },
 
   // Function to update an existing event belonging to the currently logged-in club

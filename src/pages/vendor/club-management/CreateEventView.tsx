@@ -240,25 +240,25 @@ const CreateEventView: React.FC = () => {
       // --- End Upload Placeholder ---
 
 
-      // Prepare payload, ensuring dates are correctly formatted if needed
+      // Prepare payload using the most up-to-date data in updatedFormData
       // Convert ZonedDateTime to standard Date, then to ISO string
-      const eventDate = zonedDateTimeToDate(formData.event_datetime ?? null);
-      const endDate = zonedDateTimeToDate(formData.end_time ?? null);
-      const deadlineDate = zonedDateTimeToDate(formData.registration_deadline ?? null);
+      const eventDate = zonedDateTimeToDate(updatedFormData.event_datetime ?? null); // Use updatedFormData
+      const endDate = zonedDateTimeToDate(updatedFormData.end_time ?? null); // Use updatedFormData
+      const deadlineDate = zonedDateTimeToDate(updatedFormData.registration_deadline ?? null); // Use updatedFormData
 
       const payload: CreateEventPayload = {
-        // Spread only the non-date fields from formData
-        title: formData.title!,
-        description: formData.description || null,
-        venue: formData.venue || null,
-        total_seats: formData.total_seats ?? 0,
-        is_paid: formData.is_paid ?? false,
-        payment_amount: formData.is_paid ? (formData.payment_amount ?? 0) : null,
-        sponsors: formData.sponsors || [],
-        is_seminar: formData.is_seminar ?? false,
-        guests: formData.guests || [],
+        // Use fields from updatedFormData consistently
+        title: updatedFormData.title!,
+        description: updatedFormData.description || null,
+        venue: updatedFormData.venue || null,
+        total_seats: updatedFormData.total_seats ?? 0,
+        is_paid: updatedFormData.is_paid ?? false,
+        payment_amount: updatedFormData.is_paid ? (updatedFormData.payment_amount ?? 0) : null,
+        sponsors: updatedFormData.sponsors || [], // Already using updatedFormData
+        is_seminar: updatedFormData.is_seminar ?? false,
+        guests: updatedFormData.guests || [], // Already using updatedFormData
         banner_image_path: uploadedImagePath,
-        // Add converted date/time fields
+        // Add converted date/time fields derived from updatedFormData
         event_datetime: eventDate ? eventDate.toISOString() : '',
         end_time: endDate ? endDate.toISOString() : null,
         registration_deadline: deadlineDate ? deadlineDate.toISOString() : null,

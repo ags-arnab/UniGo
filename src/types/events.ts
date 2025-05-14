@@ -19,6 +19,7 @@ export interface EventData {
   registration_deadline?: string | null; // Added (ISO string)
   created_at: string; // (ISO string)
   updated_at: string; // (ISO string)
+  active_registration_count?: number; // Added for calculating remaining seats
 }
 
 // Extended type for events that includes basic club information
