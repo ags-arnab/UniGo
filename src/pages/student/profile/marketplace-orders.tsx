@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardBody, CardHeader, Spinner, Button, Badge } from '@heroui/react';
+import { Card, CardBody, CardHeader, Spinner, Button, Chip } from '@heroui/react';
 import { ArrowLeft, ShoppingBag, ExternalLink } from 'lucide-react';
 
 // Define interfaces for order data
@@ -221,9 +221,9 @@ const StudentMarketplaceOrdersPage: React.FC = () => {
                     </p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                    <Badge color={getStatusColor(order.status)} variant="flat" className="capitalize">
+                    <Chip color={getStatusColor(order.status)} variant="flat" className="capitalize">
                         {formatStatus(order.status)}
-                    </Badge>
+                    </Chip>
                     <p className="text-lg font-bold">Total: ${order.total_price.toFixed(2)}</p>
                 </div>
               </CardHeader>

@@ -48,7 +48,7 @@ const MarketplaceCheckoutPage: React.FC = () => {
     const orderItemsInput: OrderItemInput[] = cartItems.map(item => ({
       product_id: item.id,
       quantity: item.quantityInCart,
-      selected_attributes: item.selectedAttributes || null
+      selected_attributes: item.selectedAttributes ?? null // Using nullish coalescing
     }));
 
     // Assuming all items are from the same storefront for simplicity in this call.

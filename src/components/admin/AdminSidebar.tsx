@@ -5,9 +5,12 @@ import {
   Users, // User Management
   Building, // Vendor Management
   Mail, // Vendor Applications Icon
-  CheckCircle // Imported CheckCircle
+  CheckCircle, // Imported CheckCircle
+  LogOut // Import LogOut icon
 } from 'lucide-react';
 import { Logo } from '@/components/icons';
+import { useAuth } from '@/contexts/AuthContext'; // Import useAuth hook
+import { Button } from '@heroui/react'; // Import Button component
 
 // Define sidebar structure (expand later)
 const sidebarNavItems = [
@@ -26,6 +29,7 @@ const sidebarNavItems = [
 ];
 
 export default function AdminSidebar() {
+  const { logout, user } = useAuth(); // Get logout function and user from auth context
   const baseLinkClasses = "flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-150";
   const inactiveLinkClasses = "text-gray-600 dark:text-gray-400 hover:bg-primary-100 dark:hover:bg-gray-700 hover:text-primary-700 dark:hover:text-primary-300";
   const activeLinkClasses = "bg-primary-100 dark:bg-gray-700 text-primary-700 dark:text-primary-300";
@@ -36,7 +40,6 @@ export default function AdminSidebar() {
   const toggleAccordion = (name: string) => {
       setOpenAccordion(openAccordion === name ? null : name);
   };
-
 
   return (
     <aside className="w-64 flex-shrink-0 bg-background dark:bg-gray-800 border-r border-divider dark:border-gray-700 flex flex-col">
@@ -97,6 +100,26 @@ export default function AdminSidebar() {
           )
         )}
       </nav>
+
+      {/* User Info and Logout Section */}
+      <div className="p-4 border-t border-divider dark:border-gray-700">
+        {user && (
+          <div className="space-y-3">
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {user.email}
+            </div>
+            <Button 
+              color="danger"
+              variant="flat"
+              className="w-full justify-start"
+              onPress={logout}
+              startContent={<LogOut className="h-4 w-4" />}
+            >
+              Logout
+            </Button>
+          </div>
+        )}
+      </div>
     </aside>
   );
 }

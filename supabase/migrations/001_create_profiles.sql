@@ -26,21 +26,25 @@ COMMENT ON COLUMN public.profiles.role IS 'Specifies the role of the user within
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies
--- Policy: Users can view their own profile
-CREATE POLICY "Users can view their own profile." ON public.profiles
-  FOR SELECT USING (auth.uid() = id);
+-- Public policy for authentication
+CREATE POLICY "Allow public access for authentication" ON public.profiles
+  FOR SELECT
+  USING (true);  -- This allows reading profiles during authentication
 
 -- Policy: Users can update their own profile
 CREATE POLICY "Users can update own profile." ON public.profiles
   FOR UPDATE USING (auth.uid() = id)
   WITH CHECK (auth.uid() = id);
 
--- Policy: Allow admins full access (Example - adjust as needed)
--- CREATE POLICY "Admins have full access." ON public.profiles
---   FOR ALL USING (
---     (SELECT role FROM public.profiles WHERE id = auth.uid()) = 'admin'::public.user_role
---   );
--- Note: The admin policy requires the user's role to be checked, which might need adjustment based on your exact admin setup.
+-- Policy: Allow admins full access
+CREATE POLICY "Admins have full access" ON public.profiles
+  FOR ALL
+  USING (
+    auth.uid() IN (
+      SELECT id FROM public.profiles 
+      WHERE role = 'admin'::public.user_role
+    )
+  );
 
 -- Function to automatically create a profile entry when a new user signs up
 CREATE OR REPLACE FUNCTION public.handle_new_user()

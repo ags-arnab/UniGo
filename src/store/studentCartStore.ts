@@ -7,6 +7,7 @@ interface CartStoreItem {
   menuItem: MenuItem;
   quantity: number;
   specialInstructions?: string;
+  selectedAttributes?: Record<string, string | number | boolean>;
 }
 
 // Define the state structure for the student cart store
