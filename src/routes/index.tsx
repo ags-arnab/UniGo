@@ -36,8 +36,11 @@ const StudentEventsRegistration = lazy(() => import('@/pages/student/events/regi
 const ClubEventsPage = lazy(() => import('@/pages/student/ClubEventsPage')); // Import ClubEventsPage
 // Student Marketplace
 const StudentMarketplace = lazy(() => import('@/pages/student/marketplace/index'));
+const StudentMarketplaceStorefrontView = lazy(() => import('@/pages/student/marketplace/StorefrontViewPage')); // Added for specific storefront view
+const StudentMarketplaceStores = lazy(() => import('@/pages/student/marketplace/stores/index')); // Added for stores routes
 const StudentMarketplaceProductDetails = lazy(() => import('@/pages/student/marketplace/product-details'));
 const StudentMarketplaceCart = lazy(() => import('@/pages/student/marketplace/cart'));
+const StudentMarketplaceCheckout = lazy(() => import('@/pages/student/marketplace/checkout')); // Added lazy import
 const StudentMarketplaceVendors = lazy(() => import('@/pages/student/marketplace/vendors'));
 // Student Payment
 const StudentPaymentHistory = lazy(() => import('@/pages/student/payment/history'));
@@ -46,6 +49,7 @@ const StudentPaymentRefunds = lazy(() => import('@/pages/student/payment/refunds
 const StudentProfile = lazy(() => import('@/pages/student/profile/index'));
 const StudentProfileAllergens = lazy(() => import('@/pages/student/profile/allergens'));
 const StudentProfilePreferences = lazy(() => import('@/pages/student/profile/preferences'));
+const StudentMarketplaceOrders = lazy(() => import('@/pages/student/profile/marketplace-orders')); // Add import for marketplace orders
 
 // Admin pages
 const AdminDashboardOverview = lazy(() => import('@/pages/admin/dashboard/overview'));
@@ -129,6 +133,12 @@ const AdminDashboardLayout = lazy(() => import('@/layouts/AdminDashboardLayout')
 const AdminVendorApplicationsPage = lazy(() => import('@/pages/admin/vendors/applications.tsx')); // Added .tsx
 // Add other admin dashboard views here as needed
 
+// Marketplace Management (Vendor/Operator Side)
+const MarketplaceManagementLayout = lazy(() => import('@/layouts/MarketplaceManagementLayout'));
+const MarketplaceStorefrontManagement = lazy(() => import('@/pages/vendor/marketplace_management/storefront'));
+const MarketplaceProductManagement = lazy(() => import('@/pages/vendor/marketplace_management/products'));
+const MarketplaceOrderManagement = lazy(() => import('@/pages/vendor/marketplace_management/orders/index'));
+const MarketplaceBalancePage = lazy(() => import('@/pages/vendor/marketplace_management/balance')); // Import the balance page
 
 // Error page
 const NotFound = lazy(() => import('@/pages/errors/404'));
@@ -193,9 +203,11 @@ const AppRoutes: React.FC = () => {
             {/* Student Marketplace Routes */}
             <Route path="marketplace">
               <Route index element={<StudentMarketplace />} />
-              <Route path="product/:id" element={<StudentMarketplaceProductDetails />} />
               <Route path="cart" element={<StudentMarketplaceCart />} />
-              <Route path="vendors" element={<StudentMarketplaceVendors />} />
+              <Route path="checkout" element={<StudentMarketplaceCheckout />} /> {/* Added checkout route here */}
+              <Route path="stores/*" element={<StudentMarketplaceStores />} /> {/* Updated stores route structure */}
+              <Route path="product/:productId" element={<StudentMarketplaceProductDetails />} /> {/* Direct product route */}
+              {/* <Route path="vendors" element={<StudentMarketplaceVendors />} /> */}
             </Route>
             
             {/* Student Payment Routes */}
@@ -209,6 +221,7 @@ const AppRoutes: React.FC = () => {
               <Route index element={<StudentProfile />} />
               <Route path="allergens" element={<StudentProfileAllergens />} />
               <Route path="preferences" element={<StudentProfilePreferences />} />
+              <Route path="marketplace-orders" element={<StudentMarketplaceOrders />} /> {/* Add marketplace orders route */}
             </Route>
           </Route> {/* End Student Routes within DefaultLayout */}
         </Route> {/* End RoleGuard */}
@@ -398,6 +411,20 @@ const AppRoutes: React.FC = () => {
               </Route>
             </Route>
           </Route>
+
+          {/* === BEGIN Marketplace Operator Management Routes === */}
+          <Route element={<AuthGuard />}>
+            <Route element={<RoleGuard allowedRoles={['marketplace_operator']} />}>
+              <Route path="/vendor/marketplace-management" element={<MarketplaceManagementLayout />}>
+                <Route index element={<Navigate to="products" replace />} />
+                <Route path="products" element={<MarketplaceProductManagement />} />
+                <Route path="storefront" element={<MarketplaceStorefrontManagement />} />
+                <Route path="orders" element={<MarketplaceOrderManagement />} />
+                <Route path="balance" element={<MarketplaceBalancePage />} /> {/* Add balance route */}
+              </Route>
+            </Route>
+          </Route>
+          {/* === END Marketplace Operator Management Routes === */}
 
           {/* 404 Page */}
           <Route path="*" element={<NotFound />} />

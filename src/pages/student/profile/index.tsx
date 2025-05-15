@@ -14,7 +14,7 @@ import {
   ListboxItem,
   Chip // For status display
 } from '@heroui/react';
-import { User, Hash, Mail, Phone, History, TicketIcon } from 'lucide-react'; // Added TicketIcon
+import { User, Hash, Mail, Phone, History, TicketIcon, ShoppingBag } from 'lucide-react'; // Added TicketIcon and ShoppingBag
 
 // Define the type for registrations with nested event data
 type MyRegistrationWithEvent = EventRegistrationData & { events: EventData | null };
@@ -163,7 +163,7 @@ const StudentProfile: React.FC = () => {
                 </p>
               </div>
 
-              {/* Order History Card/Link */}
+              {/* Cafeteria Order History Card/Link */}
               <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700">
                 <History className="mx-auto text-green-500 mb-3" size={28} />
                 <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2">Cafeteria Orders</h2>
@@ -173,6 +173,19 @@ const StudentProfile: React.FC = () => {
                   className="inline-flex items-center px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300 shadow hover:shadow-md"
                 >
                   View Cafeteria History
+                </Link>
+              </div>
+
+              {/* Marketplace Order History Card/Link */}
+              <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700">
+                <ShoppingBag className="mx-auto text-indigo-500 mb-3" size={28} />
+                <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2">Marketplace Orders</h2>
+                <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">View your marketplace purchases.</p>
+                <Link
+                  to="/student/profile/marketplace-orders" 
+                  className="inline-flex items-center px-6 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition duration-300 shadow hover:shadow-md"
+                >
+                  View Marketplace History
                 </Link>
               </div>
             </div>

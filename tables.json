@@ -14,270 +14,74 @@
     "column_default": null
   },
   {
-    "table_name": "categories",
-    "column_name": "name",
-    "data_type": "text",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "categories",
-    "column_name": "description",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "categories",
-    "column_name": "created_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "categories",
-    "column_name": "updated_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "counters",
+    "table_name": "vendor_applications",
     "column_name": "id",
     "data_type": "uuid",
     "is_nullable": "NO",
     "column_default": "gen_random_uuid()"
   },
   {
-    "table_name": "counters",
-    "column_name": "vendor_id",
-    "data_type": "uuid",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "counters",
-    "column_name": "name",
-    "data_type": "text",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "counters",
-    "column_name": "location",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "counters",
-    "column_name": "is_active",
-    "data_type": "boolean",
-    "is_nullable": "NO",
-    "column_default": "true"
-  },
-  {
-    "table_name": "counters",
-    "column_name": "created_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "counters",
-    "column_name": "updated_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "event_registrations",
-    "column_name": "id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": "gen_random_uuid()"
-  },
-  {
-    "table_name": "event_registrations",
-    "column_name": "event_id",
+    "table_name": "vendor_applications",
+    "column_name": "user_id",
     "data_type": "uuid",
     "is_nullable": "NO",
     "column_default": null
   },
   {
-    "table_name": "event_registrations",
-    "column_name": "student_id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "event_registrations",
-    "column_name": "registration_time",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "event_registrations",
+    "table_name": "vendor_applications",
     "column_name": "status",
     "data_type": "USER-DEFINED",
     "is_nullable": "NO",
-    "column_default": "'reserved'::event_registration_status"
+    "column_default": "'pending'::application_status"
   },
   {
-    "table_name": "event_registrations",
-    "column_name": "payment_intent_id",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "event_registrations",
-    "column_name": "paid_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "event_registrations",
-    "column_name": "expires_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "event_registrations",
-    "column_name": "created_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "event_registrations",
-    "column_name": "updated_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "events",
-    "column_name": "id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": "gen_random_uuid()"
-  },
-  {
-    "table_name": "events",
-    "column_name": "club_id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "events",
-    "column_name": "title",
-    "data_type": "text",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "events",
-    "column_name": "description",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "events",
-    "column_name": "event_datetime",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "events",
-    "column_name": "end_time",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "events",
-    "column_name": "venue",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "events",
-    "column_name": "banner_image_path",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "events",
-    "column_name": "created_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "events",
-    "column_name": "updated_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "events",
-    "column_name": "total_seats",
+    "table_name": "vendor_applications",
+    "column_name": "established_year",
     "data_type": "integer",
-    "is_nullable": "NO",
-    "column_default": "0"
-  },
-  {
-    "table_name": "events",
-    "column_name": "is_paid",
-    "data_type": "boolean",
-    "is_nullable": "NO",
-    "column_default": "false"
-  },
-  {
-    "table_name": "events",
-    "column_name": "payment_amount",
-    "data_type": "numeric",
-    "is_nullable": "YES",
-    "column_default": "0.00"
-  },
-  {
-    "table_name": "events",
-    "column_name": "sponsors",
-    "data_type": "ARRAY",
     "is_nullable": "YES",
     "column_default": null
   },
   {
-    "table_name": "events",
-    "column_name": "is_seminar",
+    "table_name": "vendor_applications",
+    "column_name": "has_food_license",
     "data_type": "boolean",
-    "is_nullable": "NO",
-    "column_default": "false"
-  },
-  {
-    "table_name": "events",
-    "column_name": "guests",
-    "data_type": "ARRAY",
     "is_nullable": "YES",
     "column_default": null
   },
   {
-    "table_name": "events",
-    "column_name": "registration_deadline",
+    "table_name": "vendor_applications",
+    "column_name": "has_business_registration",
+    "data_type": "boolean",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "submitted_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "reviewed_at",
     "data_type": "timestamp with time zone",
     "is_nullable": "YES",
     "column_default": null
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
   },
   {
     "table_name": "menu_items",
@@ -295,44 +99,9 @@
   },
   {
     "table_name": "menu_items",
-    "column_name": "name",
-    "data_type": "text",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "menu_items",
-    "column_name": "description",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "menu_items",
     "column_name": "price",
     "data_type": "numeric",
     "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "menu_items",
-    "column_name": "category",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "menu_items",
-    "column_name": "allergens",
-    "data_type": "ARRAY",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "menu_items",
-    "column_name": "ingredients",
-    "data_type": "ARRAY",
-    "is_nullable": "YES",
     "column_default": null
   },
   {
@@ -399,11 +168,333 @@
     "column_default": "now()"
   },
   {
-    "table_name": "menu_items",
-    "column_name": "image_path",
-    "data_type": "text",
+    "table_name": "events",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()"
+  },
+  {
+    "table_name": "events",
+    "column_name": "club_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "event_datetime",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "end_time",
+    "data_type": "timestamp with time zone",
     "is_nullable": "YES",
     "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "events",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "events",
+    "column_name": "total_seats",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "0"
+  },
+  {
+    "table_name": "events",
+    "column_name": "is_paid",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": "false"
+  },
+  {
+    "table_name": "events",
+    "column_name": "payment_amount",
+    "data_type": "numeric",
+    "is_nullable": "YES",
+    "column_default": "0.00"
+  },
+  {
+    "table_name": "events",
+    "column_name": "is_seminar",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": "false"
+  },
+  {
+    "table_name": "events",
+    "column_name": "registration_deadline",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()"
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "event_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "student_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "registration_time",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "status",
+    "data_type": "USER-DEFINED",
+    "is_nullable": "NO",
+    "column_default": "'reserved'::event_registration_status"
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "paid_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "expires_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "categories",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "categories",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "transactions",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()"
+  },
+  {
+    "table_name": "transactions",
+    "column_name": "user_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "transactions",
+    "column_name": "amount",
+    "data_type": "numeric",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "transactions",
+    "column_name": "type",
+    "data_type": "USER-DEFINED",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "transactions",
+    "column_name": "order_id",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "transactions",
+    "column_name": "related_user_id",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "transactions",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "counters",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()"
+  },
+  {
+    "table_name": "counters",
+    "column_name": "vendor_id",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "counters",
+    "column_name": "is_active",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": "true"
+  },
+  {
+    "table_name": "counters",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "counters",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "vendor_settings",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()"
+  },
+  {
+    "table_name": "vendor_settings",
+    "column_name": "vendor_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_settings",
+    "column_name": "working_hours",
+    "data_type": "jsonb",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_settings",
+    "column_name": "is_open",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": "true"
+  },
+  {
+    "table_name": "vendor_settings",
+    "column_name": "order_limit",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_settings",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "vendor_settings",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "tax_rates",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()"
+  },
+  {
+    "table_name": "tax_rates",
+    "column_name": "vendor_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "tax_rates",
+    "column_name": "rate",
+    "data_type": "numeric",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "tax_rates",
+    "column_name": "is_active",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": "true"
+  },
+  {
+    "table_name": "tax_rates",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
+  },
+  {
+    "table_name": "tax_rates",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": "now()"
   },
   {
     "table_name": "order_items",
@@ -445,13 +536,6 @@
     "column_name": "counter_id",
     "data_type": "uuid",
     "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "order_items",
-    "column_name": "special_instructions",
-    "data_type": "text",
-    "is_nullable": "YES",
     "column_default": null
   },
   {
@@ -533,13 +617,6 @@
   },
   {
     "table_name": "orders",
-    "column_name": "payment_method",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "orders",
     "column_name": "student_id",
     "data_type": "uuid",
     "is_nullable": "YES",
@@ -557,27 +634,6 @@
     "column_name": "id",
     "data_type": "uuid",
     "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "profiles",
-    "column_name": "email",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "profiles",
-    "column_name": "full_name",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "profiles",
-    "column_name": "avatar_url",
-    "data_type": "text",
-    "is_nullable": "YES",
     "column_default": null
   },
   {
@@ -610,189 +666,21 @@
   },
   {
     "table_name": "profiles",
-    "column_name": "phone_number",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "profiles",
-    "column_name": "student_id",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "profiles",
     "column_name": "balance",
     "data_type": "numeric",
     "is_nullable": "NO",
     "column_default": "0.00"
   },
   {
-    "table_name": "profiles",
-    "column_name": "banner_url",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "profiles",
-    "column_name": "description",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "tax_rates",
-    "column_name": "id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": "gen_random_uuid()"
-  },
-  {
-    "table_name": "tax_rates",
-    "column_name": "vendor_id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "tax_rates",
+    "table_name": "categories",
     "column_name": "name",
     "data_type": "text",
     "is_nullable": "NO",
     "column_default": null
   },
   {
-    "table_name": "tax_rates",
-    "column_name": "rate",
-    "data_type": "numeric",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "tax_rates",
+    "table_name": "categories",
     "column_name": "description",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "tax_rates",
-    "column_name": "is_active",
-    "data_type": "boolean",
-    "is_nullable": "NO",
-    "column_default": "true"
-  },
-  {
-    "table_name": "tax_rates",
-    "column_name": "created_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "tax_rates",
-    "column_name": "updated_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "transactions",
-    "column_name": "id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": "gen_random_uuid()"
-  },
-  {
-    "table_name": "transactions",
-    "column_name": "user_id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "transactions",
-    "column_name": "amount",
-    "data_type": "numeric",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "transactions",
-    "column_name": "type",
-    "data_type": "USER-DEFINED",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "transactions",
-    "column_name": "description",
-    "data_type": "text",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "transactions",
-    "column_name": "order_id",
-    "data_type": "uuid",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "transactions",
-    "column_name": "related_user_id",
-    "data_type": "uuid",
-    "is_nullable": "YES",
-    "column_default": null
-  },
-  {
-    "table_name": "transactions",
-    "column_name": "created_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "vendor_applications",
-    "column_name": "id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": "gen_random_uuid()"
-  },
-  {
-    "table_name": "vendor_applications",
-    "column_name": "user_id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "vendor_applications",
-    "column_name": "status",
-    "data_type": "USER-DEFINED",
-    "is_nullable": "NO",
-    "column_default": "'pending'::application_status"
-  },
-  {
-    "table_name": "vendor_applications",
-    "column_name": "business_name",
-    "data_type": "text",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "vendor_applications",
-    "column_name": "business_type",
-    "data_type": "text",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "vendor_applications",
-    "column_name": "other_business_type",
     "data_type": "text",
     "is_nullable": "YES",
     "column_default": null
@@ -826,15 +714,22 @@
     "column_default": null
   },
   {
-    "table_name": "vendor_applications",
-    "column_name": "established_year",
-    "data_type": "integer",
+    "table_name": "menu_items",
+    "column_name": "allergens",
+    "data_type": "ARRAY",
     "is_nullable": "YES",
     "column_default": null
   },
   {
     "table_name": "vendor_applications",
     "column_name": "vendor_type",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "transactions",
+    "column_name": "description",
     "data_type": "text",
     "is_nullable": "YES",
     "column_default": null
@@ -847,16 +742,16 @@
     "column_default": null
   },
   {
-    "table_name": "vendor_applications",
-    "column_name": "has_food_license",
-    "data_type": "boolean",
+    "table_name": "menu_items",
+    "column_name": "ingredients",
+    "data_type": "ARRAY",
     "is_nullable": "YES",
     "column_default": null
   },
   {
-    "table_name": "vendor_applications",
-    "column_name": "has_business_registration",
-    "data_type": "boolean",
+    "table_name": "events",
+    "column_name": "venue",
+    "data_type": "text",
     "is_nullable": "YES",
     "column_default": null
   },
@@ -868,32 +763,81 @@
     "column_default": null
   },
   {
-    "table_name": "vendor_applications",
-    "column_name": "submitted_at",
-    "data_type": "timestamp with time zone",
-    "is_nullable": "NO",
-    "column_default": "now()"
-  },
-  {
-    "table_name": "vendor_applications",
-    "column_name": "reviewed_at",
-    "data_type": "timestamp with time zone",
+    "table_name": "menu_items",
+    "column_name": "image_path",
+    "data_type": "text",
     "is_nullable": "YES",
     "column_default": null
   },
   {
-    "table_name": "vendor_applications",
-    "column_name": "created_at",
-    "data_type": "timestamp with time zone",
+    "table_name": "counters",
+    "column_name": "name",
+    "data_type": "text",
     "is_nullable": "NO",
-    "column_default": "now()"
+    "column_default": null
   },
   {
-    "table_name": "vendor_applications",
-    "column_name": "updated_at",
-    "data_type": "timestamp with time zone",
+    "table_name": "counters",
+    "column_name": "location",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "orders",
+    "column_name": "payment_method",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "banner_image_path",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "event_registrations",
+    "column_name": "payment_intent_id",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "title",
+    "data_type": "text",
     "is_nullable": "NO",
-    "column_default": "now()"
+    "column_default": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "email",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_settings",
+    "column_name": "shop_name",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "full_name",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "avatar_url",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
   },
   {
     "table_name": "vendor_applications",
@@ -910,59 +854,115 @@
     "column_default": null
   },
   {
-    "table_name": "vendor_settings",
-    "column_name": "id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": "gen_random_uuid()"
-  },
-  {
-    "table_name": "vendor_settings",
-    "column_name": "vendor_id",
-    "data_type": "uuid",
-    "is_nullable": "NO",
-    "column_default": null
-  },
-  {
-    "table_name": "vendor_settings",
-    "column_name": "shop_name",
+    "table_name": "events",
+    "column_name": "description",
     "data_type": "text",
     "is_nullable": "YES",
     "column_default": null
   },
   {
-    "table_name": "vendor_settings",
-    "column_name": "working_hours",
-    "data_type": "jsonb",
+    "table_name": "events",
+    "column_name": "guests",
+    "data_type": "ARRAY",
     "is_nullable": "YES",
     "column_default": null
   },
   {
-    "table_name": "vendor_settings",
-    "column_name": "is_open",
-    "data_type": "boolean",
-    "is_nullable": "NO",
-    "column_default": "true"
-  },
-  {
-    "table_name": "vendor_settings",
-    "column_name": "order_limit",
-    "data_type": "integer",
+    "table_name": "profiles",
+    "column_name": "phone_number",
+    "data_type": "text",
     "is_nullable": "YES",
     "column_default": null
   },
   {
-    "table_name": "vendor_settings",
-    "column_name": "created_at",
-    "data_type": "timestamp with time zone",
+    "table_name": "tax_rates",
+    "column_name": "name",
+    "data_type": "text",
     "is_nullable": "NO",
-    "column_default": "now()"
+    "column_default": null
   },
   {
-    "table_name": "vendor_settings",
-    "column_name": "updated_at",
-    "data_type": "timestamp with time zone",
+    "table_name": "profiles",
+    "column_name": "student_id",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "tax_rates",
+    "column_name": "description",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "menu_items",
+    "column_name": "name",
+    "data_type": "text",
     "is_nullable": "NO",
-    "column_default": "now()"
+    "column_default": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "banner_url",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "description",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "menu_items",
+    "column_name": "description",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "events",
+    "column_name": "sponsors",
+    "data_type": "ARRAY",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "menu_items",
+    "column_name": "category",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "business_name",
+    "data_type": "text",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "business_type",
+    "data_type": "text",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "vendor_applications",
+    "column_name": "other_business_type",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_name": "order_items",
+    "column_name": "special_instructions",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
   }
 ]

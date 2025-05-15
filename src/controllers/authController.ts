@@ -90,16 +90,18 @@ export class AuthController {
      if (actualRole !== 'admin') { // Admins can log in via any portal (implicitly)
         // Check if the user is trying the wrong portal, *unless* they are a 'club' trying the 'vendor' portal
         const isClubUsingVendorPortal = (actualRole === 'club' && intendedRole === 'vendor');
+        const isMarketplaceOperatorUsingVendorPortal = (actualRole === 'marketplace_operator' && intendedRole === 'vendor');
 
-        if (actualRole !== intendedRole && !isClubUsingVendorPortal) {
+        if (actualRole !== intendedRole && !isClubUsingVendorPortal && !isMarketplaceOperatorUsingVendorPortal) {
             console.warn(`Role mismatch for user ${signInData.user.id}: Tried to log in as ${intendedRole}, but actual role is ${actualRole}. Signing out.`);
             await supabase.auth.signOut(); // Sign out FIRST
 
             // Determine the correct portal name based on the actual role
             let expectedPortal = 'Unknown';
             if (actualRole === 'student') expectedPortal = 'Student';
-            else if (actualRole === 'vendor') expectedPortal = 'Vendor';
+            else if (actualRole === 'vendor') expectedPortal = 'Vendor'; // Standard cafeteria vendor
             else if (actualRole === 'club') expectedPortal = 'Vendor'; // Clubs use the Vendor portal
+            else if (actualRole === 'marketplace_operator') expectedPortal = 'Vendor'; // Marketplace Operators also use Vendor portal
 
             // Throw error AFTER sign out is processed
             throw new Error(`Incorrect login portal. You are registered as a ${actualRole}. Please use the ${expectedPortal} login.`);

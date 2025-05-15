@@ -37,6 +37,7 @@ export interface Review {
 export interface MarketplaceOrder {
   id: string;
   userId: string;
+  storefrontId: string; // Added storefrontId
   items: Array<{
     productId: string;
     quantity: number;
@@ -92,7 +93,7 @@ interface MarketplaceState {
   clearCart: () => void;
   
   // Order actions
-  placeOrder: (shippingAddress: MarketplaceOrder['shippingAddress']) => Promise<string>;
+  placeOrder: (studentUserId: string, storefrontId: string, shippingAddress: MarketplaceOrder['shippingAddress']) => Promise<string>;
   fetchOrders: () => Promise<void>;
 }
 
@@ -111,28 +112,28 @@ export const useMarketplaceStore = create<MarketplaceState>()(
       reviews: {},
       loading: false,
       error: null,
-      
+
       // Set filter for products
       setFilter: (category: string, searchQuery: string, vendorId?: string) => {
         const { products } = get();
-        
-        const filtered = products.filter(product => 
-          (category === 'All' || product.category === category) && 
+
+        const filtered = products.filter(product =>
+          (category === 'All' || product.category === category) &&
           product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
           (vendorId === undefined || product.vendor.id === vendorId)
         );
-        
+
         set({ filteredProducts: filtered });
       },
-      
+
       // Fetch all products
       fetchProducts: async () => {
         set({ loading: true, error: null });
-        
+
         try {
           // This would be replaced with an actual API call in production
           await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-          
+
           // Mock products data
           const mockProducts: Product[] = [
             {
@@ -276,56 +277,56 @@ export const useMarketplaceStore = create<MarketplaceState>()(
               createdAt: new Date('2025-03-01')
             }
           ];
-          
-          set({ 
-            products: mockProducts, 
+
+          set({
+            products: mockProducts,
             filteredProducts: mockProducts,
             featuredProducts: mockProducts.slice(0, 4),
-            loading: false 
+            loading: false
           });
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to fetch products', loading: false });
         }
       },
-      
+
       // Fetch product by ID
       fetchProductById: async (id: string) => {
         set({ loading: true, error: null });
-        
+
         try {
           // This would be replaced with an actual API call in production
           await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
-          
+
           // Find product from existing products or fetch from API
           const { products } = get();
           let product = products.find(p => p.id === id);
-          
+
           if (!product) {
             // If product not in state, this would normally fetch from API
             // For mock purposes, we'll just throw an error
             throw new Error('Product not found');
           }
-          
+
           set({ selectedProduct: product, loading: false });
-          
+
           // Add to recently viewed
           get().viewProduct(product);
-          
+
           return product;
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to fetch product', loading: false });
           throw error;
         }
       },
-      
+
       // Fetch product reviews
       fetchProductReviews: async (productId: string) => {
         set({ loading: true, error: null });
-        
+
         try {
           // This would be replaced with an actual API call in production
           await new Promise(resolve => setTimeout(resolve, 800)); // Simulate API delay
-          
+
           // Mock reviews
           const mockReviews: Review[] = [
             {
@@ -347,27 +348,27 @@ export const useMarketplaceStore = create<MarketplaceState>()(
               createdAt: new Date('2025-03-10')
             }
           ];
-          
-          set(state => ({ 
+
+          set(state => ({
             reviews: { ...state.reviews, [productId]: mockReviews },
-            loading: false 
+            loading: false
           }));
-          
+
           return mockReviews;
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to fetch reviews', loading: false });
           throw error;
         }
       },
-      
+
       // Add product review
       addProductReview: async (productId: string, rating: number, comment: string) => {
         set({ loading: true, error: null });
-        
+
         try {
           // This would be replaced with an actual API call in production
           await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-          
+
           const newReview: Review = {
             id: `review-${Math.floor(Math.random() * 100000)}`,
             productId,
@@ -377,17 +378,17 @@ export const useMarketplaceStore = create<MarketplaceState>()(
             comment,
             createdAt: new Date()
           };
-          
+
           set(state => {
             const existingReviews = state.reviews[productId] || [];
-            
+
             // Update product rating and review count
             const updatedProducts = state.products.map(product => {
               if (product.id === productId) {
                 const totalReviews = product.reviewCount + 1;
                 const totalRating = (product.rating * product.reviewCount) + rating;
                 const newRating = parseFloat((totalRating / totalReviews).toFixed(1));
-                
+
                 return {
                   ...product,
                   rating: newRating,
@@ -396,32 +397,32 @@ export const useMarketplaceStore = create<MarketplaceState>()(
               }
               return product;
             });
-            
-            return { 
+
+            return {
               products: updatedProducts,
               filteredProducts: updatedProducts,
-              selectedProduct: state.selectedProduct && state.selectedProduct.id === productId 
-                ? { 
+              selectedProduct: state.selectedProduct && state.selectedProduct.id === productId
+                ? {
                     ...state.selectedProduct,
                     rating: updatedProducts.find(p => p.id === productId)?.rating || state.selectedProduct.rating,
                     reviewCount: updatedProducts.find(p => p.id === productId)?.reviewCount || state.selectedProduct.reviewCount
-                  } 
+                  }
                 : state.selectedProduct,
-              reviews: { 
-                ...state.reviews, 
+              reviews: {
+                ...state.reviews,
                 [productId]: [newReview, ...existingReviews]
               },
-              loading: false 
+              loading: false
             };
           });
-          
+
           return newReview;
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to add review', loading: false });
           throw error;
         }
       },
-      
+
       // View product (add to recently viewed)
       viewProduct: (product: Product) => {
         set(state => {
@@ -430,27 +431,27 @@ export const useMarketplaceStore = create<MarketplaceState>()(
             product,
             ...state.recentlyViewed.filter(p => p.id !== product.id)
           ].slice(0, 5);
-          
+
           return { recentlyViewed: updatedRecentlyViewed };
         });
       },
-      
+
       // Add item to cart
       addToCart: (product: Product, quantity: number, selectedAttributes?: Record<string, string | number | boolean>) => {
         const { cartItems } = get();
-        
+
         // Check if item already exists in cart with same attributes
-        const existingItemIndex = cartItems.findIndex(item => 
-          item.product.id === product.id && 
+        const existingItemIndex = cartItems.findIndex(item =>
+          item.product.id === product.id &&
           JSON.stringify(item.selectedAttributes) === JSON.stringify(selectedAttributes)
         );
-        
+
         if (existingItemIndex !== -1) {
           // Update quantity if item exists
           set({
-            cartItems: cartItems.map((item, index) => 
+            cartItems: cartItems.map((item, index) =>
               index === existingItemIndex
-                ? { ...item, quantity: item.quantity + quantity } 
+                ? { ...item, quantity: item.quantity + quantity }
                 : item
             )
           });
@@ -464,64 +465,73 @@ export const useMarketplaceStore = create<MarketplaceState>()(
           });
         }
       },
-      
+
       // Remove item from cart
       removeFromCart: (productId: string) => {
         const { cartItems } = get();
-        
+
         set({
           cartItems: cartItems.filter(item => item.product.id !== productId)
         });
       },
-      
+
       // Update cart item quantity
       updateCartItemQuantity: (productId: string, quantity: number) => {
         const { cartItems } = get();
-        
+
         if (quantity <= 0) {
           // Remove item if quantity is 0 or negative
           get().removeFromCart(productId);
           return;
         }
-        
+
         set({
-          cartItems: cartItems.map(item => 
-            item.product.id === productId 
-              ? { ...item, quantity } 
+          cartItems: cartItems.map(item =>
+            item.product.id === productId
+              ? { ...item, quantity }
               : item
           )
         });
       },
-      
+
       // Clear cart
       clearCart: () => {
         set({ cartItems: [] });
       },
-      
+
       // Place an order
-      placeOrder: async (shippingAddress: MarketplaceOrder['shippingAddress']) => {
+      placeOrder: async (studentUserId: string, storefrontId: string, shippingAddress: MarketplaceOrder['shippingAddress']) => {
         set({ loading: true, error: null });
-        
+
         try {
           const { cartItems } = get();
-          
+
           if (cartItems.length === 0) {
             throw new Error('Cart is empty');
           }
-          
+
+          // Optional: Add a check here to ensure all cart items belong to the same storefrontId
+          const firstItemStorefrontId = cartItems[0].product.vendor.id;
+          const allItemsSameStorefront = cartItems.every(item => item.product.vendor.id === firstItemStorefrontId);
+
+          if (!allItemsSameStorefront) {
+             throw new Error('All items in the cart must belong to the same storefront.');
+          }
+
           // Calculate total price
           const totalPrice = cartItems.reduce(
             (total, item) => {
               const price = item.product.discountPrice || item.product.price;
               return total + (price * item.quantity);
-            }, 
+            },
             0
           );
-          
+
           // Create new order
           const newOrder: MarketplaceOrder = {
             id: `ORD-${Math.floor(Math.random() * 100000)}`,
-            userId: 'current-user-id', // Would come from auth store in production
+            userId: studentUserId, // Use the provided student user ID
+            storefrontId: storefrontId, // Use the provided storefront ID
             items: cartItems.map(item => ({
               productId: item.product.id,
               quantity: item.quantity,
@@ -530,43 +540,44 @@ export const useMarketplaceStore = create<MarketplaceState>()(
             })),
             totalPrice,
             shippingAddress,
-            status: 'pending',
-            paymentStatus: 'completed',
+            status: 'pending', // Initial status
+            paymentStatus: 'completed', // Assuming payment is handled elsewhere and marked completed here
             createdAt: new Date(),
             updatedAt: new Date()
           };
-          
+
           // This would be replaced with an actual API call in production
           await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
-          
-          set(state => ({ 
+
+          set(state => ({
             orders: [newOrder, ...state.orders],
-            loading: false 
+            loading: false
           }));
-          
+
           // Clear cart after successful order
           get().clearCart();
-          
+
           return newOrder.id;
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to place order', loading: false });
           throw error;
         }
       },
-      
+
       // Fetch orders
       fetchOrders: async () => {
         set({ loading: true, error: null });
-        
+
         try {
           // This would be replaced with an actual API call in production
           await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-          
+
           // Mock orders
           const mockOrders: MarketplaceOrder[] = [
             {
               id: 'ORD-12345',
               userId: 'current-user-id',
+              storefrontId: 'vendor-1', // Added mock storefrontId
               items: [
                 { productId: 'product-1', quantity: 1, price: 39.99 },
                 { productId: 'product-5', quantity: 2, price: 14.99 }
@@ -587,6 +598,7 @@ export const useMarketplaceStore = create<MarketplaceState>()(
             {
               id: 'ORD-12346',
               userId: 'current-user-id',
+              storefrontId: 'vendor-2', // Added mock storefrontId
               items: [
                 { productId: 'product-2', quantity: 1, price: 89.99 }
               ],
@@ -604,7 +616,7 @@ export const useMarketplaceStore = create<MarketplaceState>()(
               updatedAt: new Date(Date.now() - 172800000) // 2 days ago
             }
           ];
-          
+
           set({ orders: mockOrders, loading: false });
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to fetch orders', loading: false });

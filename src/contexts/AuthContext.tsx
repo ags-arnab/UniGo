@@ -9,7 +9,7 @@ export interface UserProfile {
   email?: string;
   full_name?: string;
   avatar_url?: string;
-  role: 'student' | 'vendor' | 'admin' | 'club'; // Matches the user_role enum, added 'club'
+  role: 'student' | 'vendor' | 'admin' | 'club' | 'marketplace_operator'; // Added marketplace_operator
   status?: 'active' | 'inactive' | 'pending' | 'pending_approval' | 'rejected';
   phone_number?: string;
   student_id?: string;

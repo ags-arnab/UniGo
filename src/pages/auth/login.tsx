@@ -51,6 +51,8 @@ const Login: React.FC = () => {
         navigate('/admin/dashboard', { replace: true });
       } else if (validatedProfile.role === 'student') {
         navigate('/student/cafeteria', { replace: true });
+      } else if (validatedProfile.role === 'marketplace_operator') {
+        navigate('/vendor/marketplace-management', { replace: true });
       } else if (validatedProfile.role === 'vendor') {
         navigate('/vendor/dashboard', { replace: true });
       } else if (validatedProfile.role === 'club') {

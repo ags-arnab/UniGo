@@ -50,6 +50,16 @@
     "tablename": "categories"
   },
   {
+    "policyname": "Allow users to view their own transactions",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = user_id)",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "transactions"
+  },
+  {
     "policyname": "Allow admin full access on counters",
     "permissive": "PERMISSIVE",
     "command": "ALL",
@@ -110,134 +120,54 @@
     "tablename": "counters"
   },
   {
-    "policyname": "Allow admin full access on event_registrations",
-    "permissive": "PERMISSIVE",
-    "command": "ALL",
-    "roles": "{public}",
-    "using_expression": "is_admin()",
-    "check_expression": "is_admin()",
-    "schemaname": "public",
-    "tablename": "event_registrations"
-  },
-  {
-    "policyname": "Allow clubs to view registrations for their events",
-    "permissive": "PERMISSIVE",
-    "command": "SELECT",
-    "roles": "{public}",
-    "using_expression": "(is_club() AND (event_id IN ( SELECT events.id\n   FROM events\n  WHERE (events.club_id = auth.uid()))))",
-    "check_expression": null,
-    "schemaname": "public",
-    "tablename": "event_registrations"
-  },
-  {
-    "policyname": "Allow students to manage own event registrations",
-    "permissive": "PERMISSIVE",
-    "command": "ALL",
-    "roles": "{public}",
-    "using_expression": "(auth.uid() = student_id)",
-    "check_expression": "(auth.uid() = student_id)",
-    "schemaname": "public",
-    "tablename": "event_registrations"
-  },
-  {
-    "policyname": "Allow admin full access on events",
-    "permissive": "PERMISSIVE",
-    "command": "ALL",
-    "roles": "{public}",
-    "using_expression": "is_admin()",
-    "check_expression": "is_admin()",
-    "schemaname": "public",
-    "tablename": "events"
-  },
-  {
-    "policyname": "Allow authenticated users to view events",
-    "permissive": "PERMISSIVE",
-    "command": "SELECT",
-    "roles": "{public}",
-    "using_expression": "(auth.role() = 'authenticated'::text)",
-    "check_expression": null,
-    "schemaname": "public",
-    "tablename": "events"
-  },
-  {
-    "policyname": "Allow clubs to manage their own events",
-    "permissive": "PERMISSIVE",
-    "command": "ALL",
-    "roles": "{public}",
-    "using_expression": "(is_club() AND (club_id = auth.uid()))",
-    "check_expression": "(is_club() AND (club_id = auth.uid()))",
-    "schemaname": "public",
-    "tablename": "events"
-  },
-  {
-    "policyname": "Allow admin full access on menu_items",
+    "policyname": "Allow admin full access on vendor_settings",
     "permissive": "PERMISSIVE",
     "command": "ALL",
     "roles": "{public}",
     "using_expression": "is_admin()",
     "check_expression": null,
     "schemaname": "public",
-    "tablename": "menu_items"
+    "tablename": "vendor_settings"
   },
   {
-    "policyname": "Allow authenticated users to view available menu items",
-    "permissive": "PERMISSIVE",
-    "command": "SELECT",
-    "roles": "{public}",
-    "using_expression": "((auth.role() = 'authenticated'::text) AND ((available = true) OR (updated_at > (now() - '00:00:05'::interval))))",
-    "check_expression": null,
-    "schemaname": "public",
-    "tablename": "menu_items"
-  },
-  {
-    "policyname": "Allow students to view menu items from their orders",
-    "permissive": "PERMISSIVE",
-    "command": "SELECT",
-    "roles": "{public}",
-    "using_expression": "(EXISTS ( SELECT 1\n   FROM (order_items oi\n     JOIN orders o ON ((oi.order_id = o.id)))\n  WHERE ((oi.menu_item_id = menu_items.id) AND (o.user_id = auth.uid()))))",
-    "check_expression": null,
-    "schemaname": "public",
-    "tablename": "menu_items"
-  },
-  {
-    "policyname": "Allow vendors to create items for their counters",
-    "permissive": "PERMISSIVE",
-    "command": "INSERT",
-    "roles": "{public}",
-    "using_expression": null,
-    "check_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
-    "schemaname": "public",
-    "tablename": "menu_items"
-  },
-  {
-    "policyname": "Allow vendors to delete items from their counters",
-    "permissive": "PERMISSIVE",
-    "command": "DELETE",
-    "roles": "{public}",
-    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
-    "check_expression": null,
-    "schemaname": "public",
-    "tablename": "menu_items"
-  },
-  {
-    "policyname": "Allow vendors to update items on their counters",
+    "policyname": "Allow vendors to update their own settings",
     "permissive": "PERMISSIVE",
     "command": "UPDATE",
     "roles": "{public}",
-    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
-    "check_expression": "(counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid())))",
+    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
+    "check_expression": "(vendor_id = auth.uid())",
     "schemaname": "public",
-    "tablename": "menu_items"
+    "tablename": "vendor_settings"
   },
   {
-    "policyname": "Allow vendors to view all their menu items",
+    "policyname": "Allow vendors to view their own settings",
     "permissive": "PERMISSIVE",
     "command": "SELECT",
     "roles": "{public}",
-    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
     "check_expression": null,
     "schemaname": "public",
-    "tablename": "menu_items"
+    "tablename": "vendor_settings"
+  },
+  {
+    "policyname": "Allow admin full access on tax_rates",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "tax_rates"
+  },
+  {
+    "policyname": "Allow vendors to manage their own tax rates",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
+    "check_expression": "(vendor_id = auth.uid())",
+    "schemaname": "public",
+    "tablename": "tax_rates"
   },
   {
     "policyname": "Allow admin full access on order_items",
@@ -370,6 +300,16 @@
     "tablename": "profiles"
   },
   {
+    "policyname": "Allow clubs to view profiles of their event registrants",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{authenticated}",
+    "using_expression": "((role = 'student'::user_role) AND (EXISTS ( SELECT 1\n   FROM (event_registrations er\n     JOIN events e ON ((er.event_id = e.id)))\n  WHERE ((er.student_id = profiles.id) AND (e.club_id = auth.uid())))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "profiles"
+  },
+  {
     "policyname": "Users can update own profile.",
     "permissive": "PERMISSIVE",
     "command": "UPDATE",
@@ -388,36 +328,6 @@
     "check_expression": null,
     "schemaname": "public",
     "tablename": "profiles"
-  },
-  {
-    "policyname": "Allow admin full access on tax_rates",
-    "permissive": "PERMISSIVE",
-    "command": "ALL",
-    "roles": "{public}",
-    "using_expression": "is_admin()",
-    "check_expression": null,
-    "schemaname": "public",
-    "tablename": "tax_rates"
-  },
-  {
-    "policyname": "Allow vendors to manage their own tax rates",
-    "permissive": "PERMISSIVE",
-    "command": "ALL",
-    "roles": "{public}",
-    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
-    "check_expression": "(vendor_id = auth.uid())",
-    "schemaname": "public",
-    "tablename": "tax_rates"
-  },
-  {
-    "policyname": "Allow users to view their own transactions",
-    "permissive": "PERMISSIVE",
-    "command": "SELECT",
-    "roles": "{public}",
-    "using_expression": "(auth.uid() = user_id)",
-    "check_expression": null,
-    "schemaname": "public",
-    "tablename": "transactions"
   },
   {
     "policyname": "Allow admin full access on vendor_applications",
@@ -450,33 +360,133 @@
     "tablename": "vendor_applications"
   },
   {
-    "policyname": "Allow admin full access on vendor_settings",
+    "policyname": "Allow admin full access on menu_items",
     "permissive": "PERMISSIVE",
     "command": "ALL",
     "roles": "{public}",
     "using_expression": "is_admin()",
     "check_expression": null,
     "schemaname": "public",
-    "tablename": "vendor_settings"
+    "tablename": "menu_items"
   },
   {
-    "policyname": "Allow vendors to update their own settings",
-    "permissive": "PERMISSIVE",
-    "command": "UPDATE",
-    "roles": "{public}",
-    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
-    "check_expression": "(vendor_id = auth.uid())",
-    "schemaname": "public",
-    "tablename": "vendor_settings"
-  },
-  {
-    "policyname": "Allow vendors to view their own settings",
+    "policyname": "Allow authenticated users to view available menu items",
     "permissive": "PERMISSIVE",
     "command": "SELECT",
     "roles": "{public}",
-    "using_expression": "(is_vendor() AND (vendor_id = auth.uid()))",
+    "using_expression": "((auth.role() = 'authenticated'::text) AND ((available = true) OR (updated_at > (now() - '00:00:05'::interval))))",
     "check_expression": null,
     "schemaname": "public",
-    "tablename": "vendor_settings"
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow students to view menu items from their orders",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM (order_items oi\n     JOIN orders o ON ((oi.order_id = o.id)))\n  WHERE ((oi.menu_item_id = menu_items.id) AND (o.user_id = auth.uid()))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow vendors to create items for their counters",
+    "permissive": "PERMISSIVE",
+    "command": "INSERT",
+    "roles": "{public}",
+    "using_expression": null,
+    "check_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow vendors to delete items from their counters",
+    "permissive": "PERMISSIVE",
+    "command": "DELETE",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow vendors to update items on their counters",
+    "permissive": "PERMISSIVE",
+    "command": "UPDATE",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "check_expression": "(counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid())))",
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow vendors to view all their menu items",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(is_vendor() AND (counter_id IN ( SELECT counters.id\n   FROM counters\n  WHERE (counters.vendor_id = auth.uid()))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "menu_items"
+  },
+  {
+    "policyname": "Allow admin full access on events",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": "is_admin()",
+    "schemaname": "public",
+    "tablename": "events"
+  },
+  {
+    "policyname": "Allow authenticated users to view events",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(auth.role() = 'authenticated'::text)",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "events"
+  },
+  {
+    "policyname": "Allow clubs to manage their own events",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "(is_club() AND (club_id = auth.uid()))",
+    "check_expression": "(is_club() AND (club_id = auth.uid()))",
+    "schemaname": "public",
+    "tablename": "events"
+  },
+  {
+    "policyname": "Allow admin full access on event_registrations",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "check_expression": "is_admin()",
+    "schemaname": "public",
+    "tablename": "event_registrations"
+  },
+  {
+    "policyname": "Allow clubs to view registrations for their events",
+    "permissive": "PERMISSIVE",
+    "command": "SELECT",
+    "roles": "{public}",
+    "using_expression": "(is_club() AND (event_id IN ( SELECT events.id\n   FROM events\n  WHERE (events.club_id = auth.uid()))))",
+    "check_expression": null,
+    "schemaname": "public",
+    "tablename": "event_registrations"
+  },
+  {
+    "policyname": "Allow students to manage own event registrations",
+    "permissive": "PERMISSIVE",
+    "command": "ALL",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = student_id)",
+    "check_expression": "(auth.uid() = student_id)",
+    "schemaname": "public",
+    "tablename": "event_registrations"
   }
 ]

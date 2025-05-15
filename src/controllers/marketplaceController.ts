@@ -206,23 +206,50 @@ export class MarketplaceController {
 
   /**
    * Places an order for items in the cart
+   * @param studentUserId The ID of the student placing the order.
+   * @param storefrontId The ID of the storefront the order is placed with.
    * @param shippingAddress Shipping address for the order
    * @returns Promise that resolves with the order ID when the order is placed
    */
-  static async placeOrder(shippingAddress: MarketplaceOrder['shippingAddress']): Promise<string> {
+  static async placeOrder(studentUserId: string, storefrontId: string, shippingAddress: MarketplaceOrder['shippingAddress']): Promise<string> {
     const cartItems = useMarketplaceStore.getState().cartItems;
 
     if (cartItems.length === 0) {
       throw new Error('Cart is empty');
     }
 
+    // Ensure all items are from the same storefront before proceeding
+    if (cartItems.length > 0) {
+      const firstItemStorefrontId = cartItems[0].product.vendor.id;
+      const allItemsSameStorefront = cartItems.every(item => item.product.vendor.id === firstItemStorefrontId);
+
+      if (!allItemsSameStorefront) {
+         throw new Error('All items in the cart must belong to the same storefront.');
+      }
+      // Use the storefrontId from the first item if not explicitly provided (though it should be)
+      if (!storefrontId) {
+          storefrontId = firstItemStorefrontId;
+      } else if (storefrontId !== firstItemStorefrontId) {
+           // This case should ideally not happen if UI is correct, but as a safeguard:
+           console.warn(`Provided storefrontId (${storefrontId}) does not match cart items' storefrontId (${firstItemStorefrontId}). Using cart item's storefrontId.`);
+           storefrontId = firstItemStorefrontId;
+      }
+    } else {
+        // Cart is empty, this case is already handled above, but for completeness
+        throw new Error('Cart is empty');
+    }
+
+
     if (!shippingAddress || !shippingAddress.addressLine1 || !shippingAddress.city ||
         !shippingAddress.state || !shippingAddress.zipCode || !shippingAddress.country) {
       throw new Error('Complete shipping address is required');
     }
 
+    // Note: In a real application, studentUserId would be obtained from an authentication context.
+    // For this example, we assume it's passed in.
+
     try {
-      return await useMarketplaceStore.getState().placeOrder(shippingAddress);
+      return await useMarketplaceStore.getState().placeOrder(studentUserId, storefrontId, shippingAddress);
     } catch (error) {
       console.error('Failed to place order:', error);
       throw error;
