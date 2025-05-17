@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
-import { Card, CardBody, CardFooter, Image, Button, Spinner, Input, Avatar, ButtonGroup, Chip } from '@heroui/react';
-import { ShoppingBag, Search, Store, ShoppingCart, Eye } from 'lucide-react';
+import { Card, CardBody, CardFooter, Image, Button, Spinner, Input, Chip } from '@heroui/react';
+import { ShoppingBag, Search, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import MarketplaceCartFAB from '@/components/ui/marketplace/CartFAB';
 import StorefrontsSlider from '@/components/ui/marketplace/StorefrontsSlider';
 
-// Define interfaces
-interface Storefront {
-  id: string;
-  name: string;
-  description: string | null;
-  logo_url: string | null;
-  banner_url: string | null;
-  is_active: boolean;
-  operator_id: string;
-  created_at: string;
-  updated_at: string;
-}
 
 interface Product {
   id: string;
@@ -35,8 +23,6 @@ interface Product {
 }
 
 // Default placeholder images (using general placeholders)
-const DEFAULT_BANNER = 'https://via.placeholder.com/1200x400?text=Store+Banner';
-const DEFAULT_LOGO = 'https://via.placeholder.com/150x150?text=Store+Logo';
 const DEFAULT_PRODUCT_IMAGE = 'https://via.placeholder.com/300x300?text=No+Image';
 
 const StudentMarketplacePage: React.FC = () => {

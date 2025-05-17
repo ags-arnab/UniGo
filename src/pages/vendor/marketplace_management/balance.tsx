@@ -6,7 +6,7 @@ import { Spinner, Button, Card, addToast } from "@heroui/react";
 const MarketplaceOperatorBalancePage: React.FC = () => {
   const { user } = useAuth();
   const [balance, setBalance] = useState<number | null>(null);
-  const [storefrontId, setStorefrontId] = useState<string | null>(null);
+  const [, setStorefrontId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isPayoutLoading, setIsPayoutLoading] = useState<boolean>(false);

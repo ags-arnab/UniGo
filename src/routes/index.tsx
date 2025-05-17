@@ -36,12 +36,10 @@ const StudentEventsRegistration = lazy(() => import('@/pages/student/events/regi
 const ClubEventsPage = lazy(() => import('@/pages/student/ClubEventsPage')); // Import ClubEventsPage
 // Student Marketplace
 const StudentMarketplace = lazy(() => import('@/pages/student/marketplace/index'));
-const StudentMarketplaceStorefrontView = lazy(() => import('@/pages/student/marketplace/StorefrontViewPage')); // Added for specific storefront view
 const StudentMarketplaceStores = lazy(() => import('@/pages/student/marketplace/stores/index')); // Added for stores routes
 const StudentMarketplaceProductDetails = lazy(() => import('@/pages/student/marketplace/product-details'));
 const StudentMarketplaceCart = lazy(() => import('@/pages/student/marketplace/cart'));
 const StudentMarketplaceCheckout = lazy(() => import('@/pages/student/marketplace/checkout')); // Added lazy import
-const StudentMarketplaceVendors = lazy(() => import('@/pages/student/marketplace/vendors'));
 // Student Payment
 const StudentPaymentHistory = lazy(() => import('@/pages/student/payment/history'));
 const StudentPaymentRefunds = lazy(() => import('@/pages/student/payment/refunds'));
