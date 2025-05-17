@@ -1,18 +1,19 @@
-import React, { useState } from 'react'; // Added useEffect
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Card, CardBody, CardFooter, Input, Button, Checkbox, Divider, Tabs, Tab, addToast } from "@heroui/react"; // Consolidated imports and added addToast
+import { Card, CardBody, CardFooter, Input, Button, Checkbox, Divider, Tabs, Tab, addToast } from "@heroui/react";
 import { AuthController } from '@/controllers/authController';
-import { useAuth } from '@/contexts/AuthContext'; // Import useAuth hook
-import { AuthError } from '@supabase/supabase-js'; // Import AuthError
+import { useAuth } from '@/contexts/AuthContext';
+import { AuthError } from '@supabase/supabase-js';
 import {
   AcademicCapIcon,
   EyeIcon,
-  EyeSlashIcon, 
-  LockClosedIcon, 
-  UserIcon, 
-  EnvelopeIcon, 
+  EyeSlashIcon,
+  LockClosedIcon,
+  UserIcon,
+  EnvelopeIcon,
   PhoneIcon,
-  IdentificationIcon
+  IdentificationIcon,
+  BuildingStorefrontIcon
 } from '@heroicons/react/24/outline';
 
 const Register: React.FC = () => {
@@ -20,23 +21,20 @@ const Register: React.FC = () => {
   const [selectedRole, setSelectedRole] = useState<string>("student");
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [studentId, setStudentId] = useState('');  // Added student ID field
+  const [studentId, setStudentId] = useState('');
+  const [businessType, setBusinessType] = useState(''); // Added business type field
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
   // Use loading state from the context, manage errors locally
-  const { loading: isLoading } = useAuth(); // Removed setLoading
+  const { loading: isLoading } = useAuth();
   const [isVisible, setIsVisible] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  // Removed localError state
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  // Removed useEffect for clearing localError
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Removed setLocalError(null);
 
     // Client-side validation using toasts
     if (!agreedToTerms) {
@@ -55,51 +53,54 @@ const Register: React.FC = () => {
         addToast({ title: 'Missing Information', description: 'Full Name is required.', color: 'warning' });
         return;
      }
-     if (!email) { // Add check for email
+     if (!email) {
         addToast({ title: 'Missing Information', description: 'Email is required.', color: 'warning' });
         return;
      }
-     if (!studentId) { // Add check for studentId
-        addToast({ title: 'Missing Information', description: 'Student ID is required.', color: 'warning' });
+
+     if (selectedRole === 'student' && !studentId) {
+        addToast({ title: 'Missing Information', description: 'Student ID is required for student registration.', color: 'warning' });
          return;
       }
 
-    // Removed setLoading(true); isLoading is handled by AuthContext
+     if (selectedRole === 'campus_store' && !businessType) {
+        addToast({ title: 'Missing Information', description: 'Business Type is required for campus store registration.', color: 'warning' });
+        return;
+     }
+
 
     try {
-      // Structure the call correctly for Supabase signUp
       await AuthController.register({
         email,
         password,
         options: {
           data: {
-            full_name: name, // Supabase convention often uses snake_case for metadata
-            student_id: studentId, // Pass studentId here
-            phone: phone || undefined, // Pass phone if collected
-            // role: selectedRole // Role is set by DB trigger, no need to pass here
+            full_name: name,
+            // Include student_id only if role is student
+            student_id: selectedRole === 'student' ? studentId : undefined,
+            phone: phone || undefined,
+            // Pass the selected role and business type
+            role: selectedRole, // Pass selected role
+            business_type: selectedRole === 'campus_store' ? businessType : undefined // Pass business type if campus store
           }
         }
       });
 
-      // Show success toast
       addToast({
         title: 'Registration Submitted',
         description: 'Please check your email to confirm your account.',
         color: 'success',
-         timeout: 8000 // Longer timeout for reading
+         timeout: 8000
        });
-       // Navigate to login page after showing success toast
        navigate('/auth/login');
 
      } catch (err) {
-       // Use addToast for errors
       console.error("Registration page caught error:", err);
       let errorMessage = "An unexpected error occurred during registration.";
       let errorTitle = "Registration Failed";
 
       if (err instanceof AuthError || err instanceof Error) {
         errorMessage = err.message;
-        // Check for specific Supabase error for existing user
         if (errorMessage.toLowerCase().includes('user already registered') || errorMessage.toLowerCase().includes('already exists')) {
           errorTitle = "Account Exists";
           errorMessage = "An account with this email already exists. Please try logging in.";
@@ -111,13 +112,12 @@ const Register: React.FC = () => {
         description: errorMessage,
          color: 'danger'
        });
-     } // Removed finally block and setLoading(false)
+     }
    };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-default-50 p-4">
       <div className="w-full max-w-md">
-        {/* Logo and branding */}
         <div className="text-center mb-6">
           <div className="flex justify-center mb-2">
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -130,11 +130,8 @@ const Register: React.FC = () => {
 
         <Card className="shadow-lg border-none">
           <CardBody className="gap-4 p-6">
-            {/* Removed local error display div */}
-
-            {/* Role selection tabs */}
             <Tabs
-              aria-label="Registration Type" 
+              aria-label="Registration Type"
               selectedKey={selectedRole}
               onSelectionChange={(key) => setSelectedRole(key as string)}
               color="primary"
@@ -151,6 +148,15 @@ const Register: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <AcademicCapIcon className="w-4 h-4" />
                     <span>Student</span>
+                  </div>
+                }
+              />
+               <Tab
+                key="campus_store"
+                title={
+                  <div className="flex items-center gap-2">
+                    <BuildingStorefrontIcon className="w-4 h-4" />
+                    <span>Campus Store</span>
                   </div>
                 }
               />
@@ -171,23 +177,45 @@ const Register: React.FC = () => {
                 />
               </div>
 
-              {/* Student ID field */}
-              <div className="space-y-2">
-                <label htmlFor="studentId" className="text-sm font-medium text-default-700">
-                  Student ID
-                </label>
-                <Input
-                  id="studentId"
-                  placeholder="Enter your student ID"
-                  value={studentId}
-                  onChange={(e) => setStudentId(e.target.value)}
-                  startContent={<IdentificationIcon className="w-4 h-4 text-default-400" />}
-                  isRequired
-                />
-                <p className="text-xs text-default-500">
-                  Your university-provided student identification number
-                </p>
-              </div>
+              {/* Conditional fields based on selected role */}
+              {selectedRole === 'student' && (
+                <div className="space-y-2">
+                  <label htmlFor="studentId" className="text-sm font-medium text-default-700">
+                    Student ID
+                  </label>
+                  <Input
+                    id="studentId"
+                    placeholder="Enter your student ID"
+                    value={studentId}
+                    onChange={(e) => setStudentId(e.target.value)}
+                    startContent={<IdentificationIcon className="w-4 h-4 text-default-400" />}
+                    isRequired
+                  />
+                  <p className="text-xs text-default-500">
+                    Your university-provided student identification number
+                  </p>
+                </div>
+              )}
+
+              {selectedRole === 'campus_store' && (
+                 <div className="space-y-2">
+                   <label htmlFor="businessType" className="text-sm font-medium text-default-700">
+                     Business Type
+                   </label>
+                   <Input
+                     id="businessType"
+                     placeholder="e.g., Bookstore, Cafeteria, etc."
+                     value={businessType}
+                     onChange={(e) => setBusinessType(e.target.value)}
+                     startContent={<BuildingStorefrontIcon className="w-4 h-4 text-default-400" />}
+                     isRequired
+                   />
+                   <p className="text-xs text-default-500">
+                     Specify the type of campus store
+                   </p>
+                 </div>
+              )}
+
 
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium text-default-700">
@@ -257,12 +285,10 @@ const Register: React.FC = () => {
               </div>
 
               <div className="mt-2">
-                 {/* Update Checkbox props */}
                 <Checkbox
                   isSelected={agreedToTerms}
                   onValueChange={setAgreedToTerms}
                   className="text-sm"
-                  // Removed isInvalid based on localError
                 >
                   <span className="text-sm text-default-600">
                     I agree to the{" "}
@@ -270,27 +296,24 @@ const Register: React.FC = () => {
                       Terms of Service
                     </Link>{" "}
                     and{" "}
-                    <Link to="/privacy" className="text-primary hover:underline">
+                    <Link to="/privacy" className="text-primary hover=">
                       Privacy Policy
                     </Link>
                   </span>
                 </Checkbox>
               </div>
 
-              {/* Use isLoading from store */}
               <Button
                 type="submit"
                 color="primary"
                 className="w-full font-medium mt-6"
                 isLoading={isLoading}
-                // Disable button only if terms not agreed or loading
                 isDisabled={!agreedToTerms || isLoading}
               >
-                Create Student Account
+                Create Account
               </Button>
             </form>
 
-            {/* OR Divider and Google Button - Keep as is */}
             <div className="flex items-center gap-4 my-2">
               <Divider className="flex-1" />
               <p className="text-sm text-default-500">OR</p>
@@ -321,7 +344,7 @@ const Register: React.FC = () => {
             </p>
           </CardFooter>
         </Card>
-        
+
         <div className="text-center mt-4">
           <p className="text-default-500 text-xs">
             Are you a vendor?{" "}

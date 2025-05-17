@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
 import { useCart } from '@/contexts/CartContext';
-import { Button, Card, CardBody, CardHeader, Divider, Image, Spinner, Chip, Badge, Textarea, addToast } from '@heroui/react';
+import { Button, Card, CardBody, CardHeader, Divider, Image, Spinner, Chip, Badge, addToast } from '@heroui/react';
 import { ArrowLeft, ShoppingCart, Plus, Minus, StoreIcon } from 'lucide-react';
+import MarketplaceCartFAB from '@/components/ui/marketplace/CartFAB';
 
 interface ProductDetails {
   id: string;
@@ -24,13 +25,13 @@ interface ProductDetails {
 }
 
 const StudentMarketplaceProductDetails: React.FC = () => {
-  const { productId, storefrontId } = useParams<{ productId: string, storefrontId: string }>();
+  const { productId } = useParams<{ productId: string, storefrontId: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
-  const { cartItems, addItemToCart, removeItemFromCart, updateItemQuantity } = useCart();
+  const { cartItems, addItemToCart, updateItemQuantity } = useCart();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -350,6 +351,8 @@ const StudentMarketplaceProductDetails: React.FC = () => {
           )}
         </div>
       </div>
+
+      <MarketplaceCartFAB />
     </div>
   );
 };

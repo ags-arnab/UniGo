@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabaseClient';
-import { Button, Select, SelectItem, Card, CardBody, CardHeader, addToast, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Chip, Input, Spinner } from '@heroui/react';
-import { MarketplaceProduct } from '../products'; // Re-use if item details needed
-import { Search } from 'lucide-react';
+import { Button, Select, SelectItem, Card, CardBody, CardHeader, addToast, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Chip, Input, Spinner, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/react';
+import { Search, Eye } from 'lucide-react';
 
 // From 036_create_marketplace_module.sql
 export type MarketplaceOrderStatus = 
@@ -75,6 +74,8 @@ const MarketplaceOrderManagement: React.FC = () => {
   const [storefrontId, setStorefrontId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<MarketplaceOrder | null>(null);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
   // Function to fetch student profile by UUID
   const fetchStudentProfile = async (orderId: string, studentId: string) => {
@@ -256,6 +257,25 @@ const MarketplaceOrderManagement: React.FC = () => {
     }
   };
 
+  const handleViewDetails = (order: MarketplaceOrder) => {
+    setSelectedOrder(order);
+    setIsDetailsModalOpen(true);
+  };
+
+  const formatAddress = (address: any) => {
+    if (!address) return 'No address provided';
+    
+    try {
+      const addressObj = typeof address === 'string' ? JSON.parse(address) : address;
+      return Object.entries(addressObj)
+        .filter(([_, value]) => value)
+        .map(([_, value]) => value)
+        .join(', ');
+    } catch (e) {
+      return String(address);
+    }
+  };
+
   const orderStatusOptions: MarketplaceOrderStatus[] = [
     'pending_payment', 'processing', 'ready_for_pickup', 'shipped',
     'delivered', 'cancelled_by_operator', 'refunded' // Student cancellation handled by student
@@ -272,7 +292,7 @@ const MarketplaceOrderManagement: React.FC = () => {
     { key: "total_price", label: "Total" },
     { key: "status", label: "Status" },
     { key: "created_at", label: "Date" },
-    { key: "actions", label: "Update Status" },
+    { key: "actions", label: "Actions" },
   ];
 
   return (
@@ -357,7 +377,16 @@ const MarketplaceOrderManagement: React.FC = () => {
                       }
                       if (columnKey === 'created_at') return <TableCell>{new Date(item.created_at).toLocaleDateString()}</TableCell>;
                       if (columnKey === 'actions') return (
-                        <TableCell>
+                        <TableCell className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="flat"
+                            color="primary"
+                            startContent={<Eye size={16} />}
+                            onPress={() => handleViewDetails(item)}
+                          >
+                            View Details
+                          </Button>
                           <Select 
                             aria-label="Update order status"
                             placeholder="Change status"
@@ -383,7 +412,105 @@ const MarketplaceOrderManagement: React.FC = () => {
           )}
         </CardBody>
       </Card>
-      {/* TODO: Implement order details view, perhaps in a modal or separate page */}
+
+      <Modal 
+        isOpen={isDetailsModalOpen} 
+        onOpenChange={setIsDetailsModalOpen}
+        size="2xl"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>
+                <h3 className="text-lg font-semibold">Order Details</h3>
+              </ModalHeader>
+              <ModalBody>
+                {selectedOrder && (
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-1">Order Information</h4>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <p className="text-gray-500">Order ID:</p>
+                          <p className="font-mono">{selectedOrder.id}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Date Placed:</p>
+                          <p>{new Date(selectedOrder.created_at).toLocaleString()}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Status:</p>
+                          <Chip color={statusColors[selectedOrder.status] || "default"} size="sm">
+                            {String(selectedOrder.status).replace(/_/g, ' ')}
+                          </Chip>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Total Amount:</p>
+                          <p className="font-semibold">${selectedOrder.total_price.toFixed(2)}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-1">Student Information</h4>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <p className="text-gray-500">Name:</p>
+                          <p>{selectedOrder.student_profile?.full_name || 'N/A'}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Student ID:</p>
+                          <p>{selectedOrder.student_profile?.student_id || 'N/A'}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Email:</p>
+                          <p>{selectedOrder.student_profile?.email || 'N/A'}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Phone:</p>
+                          <p>{selectedOrder.student_profile?.phone_number || 'N/A'}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-1">Shipping Address</h4>
+                      <p className="text-sm">{formatAddress(selectedOrder.shipping_address)}</p>
+                    </div>
+
+                    {selectedOrder.student_notes && (
+                      <div>
+                        <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-1">Student Notes</h4>
+                        <p className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded">
+                          {selectedOrder.student_notes}
+                        </p>
+                      </div>
+                    )}
+
+                    <div>
+                      <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-1">Order Items</h4>
+                      <div className="space-y-2">
+                        {selectedOrder.order_items?.map((item, index) => (
+                          <div key={index} className="flex justify-between items-center text-sm bg-gray-50 dark:bg-gray-800 p-2 rounded">
+                            <div>
+                              <p className="font-medium">{item.product_snapshot?.name || 'Product Name Not Available'}</p>
+                              <p className="text-gray-500">Quantity: {item.quantity}</p>
+                            </div>
+                            <p className="font-semibold">${item.price_at_purchase.toFixed(2)}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="light" onPress={onClose}>Close</Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

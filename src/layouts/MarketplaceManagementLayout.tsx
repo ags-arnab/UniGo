@@ -1,12 +1,13 @@
 import React from 'react';
 import { Outlet, NavLink as RouterNavLink } from 'react-router-dom'; // Use RouterNavLink to avoid name clash if HeroUI has NavLink
-import { Navbar as HeroUINavbar, NavbarBrand, NavbarContent } from "@heroui/navbar"; // Assuming this is where Navbar components are
+import { Navbar as HeroUINavbar, NavbarBrand, NavbarContent, Button } from "@heroui/react"; // Import Button from HeroUI
 import { BuildingStorefrontIcon, CubeIcon, ShoppingCartIcon, BanknotesIcon } from '@heroicons/react/24/outline';
 import { Logo } from '@/components/icons'; // Assuming a Logo component exists
 import { useAuth } from '@/contexts/AuthContext';
+import { LogOut } from 'lucide-react';
 
 const MarketplaceManagementLayout: React.FC = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const baseLinkClasses = "flex items-center px-3 py-2 rounded-md text-sm font-medium";
   const activeLinkClasses = "bg-primary-100 text-primary-700";
@@ -52,6 +53,20 @@ const MarketplaceManagementLayout: React.FC = () => {
             Balance
           </RouterNavLink>
         </nav>
+        
+        {/* Logout Button at bottom of sidebar */}
+        <div className="mt-auto p-4 border-t">
+          <Button 
+            color="danger"
+            variant="flat"
+            fullWidth
+            className="justify-start"
+            startContent={<LogOut className="h-5 w-5" />}
+            onPress={logout}
+          >
+            Logout
+          </Button>
+        </div>
       </aside>
 
       {/* Main Content Area */}

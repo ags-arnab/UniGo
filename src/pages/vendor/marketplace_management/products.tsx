@@ -84,22 +84,31 @@ const MarketplaceProductManagement: React.FC = () => {
       }
     };
     fetchStorefrontAndProducts();
-  }, [user, profile]);
+  }, [user, profile]);  // Debounce search term
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('');
 
-  // Apply search filter when products or searchTerm changes
   useEffect(() => {
-    if (!searchTerm.trim()) {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Apply search filter when products or debouncedSearchTerm changes
+  useEffect(() => {
+    if (!debouncedSearchTerm.trim()) {
       setFilteredProducts(products);
       return;
     }
     
-    const lowercasedSearch = searchTerm.toLowerCase();
+    const lowercasedSearch = debouncedSearchTerm.toLowerCase();
     const filtered = products.filter(product => 
       product.name.toLowerCase().includes(lowercasedSearch) || 
       (product.description && product.description.toLowerCase().includes(lowercasedSearch)) ||
       (product.category && product.category.toLowerCase().includes(lowercasedSearch))
     );
-    
+
     setFilteredProducts(filtered);
   }, [products, searchTerm]);
 

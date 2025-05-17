@@ -185,9 +185,6 @@ const AdminUsers: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
-  };
 
   const formatCurrency = (amount: number | null) => {
     if (amount === null) return '৳0.00';

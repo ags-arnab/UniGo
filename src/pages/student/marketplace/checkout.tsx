@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart, CartItem } from '@/contexts/CartContext';
+import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabaseClient';
 import { Button, Textarea, Card, CardBody, CardHeader, Divider, Spinner, addToast, Alert } from '@heroui/react';
